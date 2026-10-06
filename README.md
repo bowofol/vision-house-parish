@@ -1,11 +1,19 @@
 # RCCG Vision House Parish
 
-A clean, responsive vanilla HTML/CSS/JavaScript church website.
+A responsive, photography-led parish website using the supplied congregation and pastor photographs, the official RCCG logo, and the established green-and-white identity.
 
-## Run locally
+Current church contact: **0803 701 1088** ([Call](tel:+2348037011088), [WhatsApp](https://wa.me/2348037011088)). Location: **Behind Rofit School, Nurses Estate, City College, Karu**. Google Maps uses this written destination; an exact verified parish pin is still needed.
 
-Open `index.html` directly in a browser, or serve this folder with any static file server.
+Open index.html in a browser, or serve the project root with a static server:
 
-## Add real images
+    python -m http.server 8765
 
-The inspected church photographs are active in `assets/images/`: `hero-church.jpg`, `church-prayer.jpg`, `church-community.jpg`, and `pastor-dele.jpg`. Additional program and gallery photographs can be added later using the naming guidance in `assets/images/README.md`.
+Then open http://localhost:8765.
+
+No build step, framework or package installation is needed. See CONTENT-GUIDE.md for approved content, image replacement, motion and video setup. See REDESIGN-NOTES.md for the original redesign report, REFINEMENT-NOTES.md for the animation/grid refinements and MEDIA-UPDATE-NOTES.md for the final contact, address and portrait-video update.
+
+Regenerate responsive images when needed:
+
+    python scripts/optimize_images.py
+
+This optional preparation script requires Pillow. Original photographs are preserved.

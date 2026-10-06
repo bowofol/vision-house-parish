@@ -1,0 +1,354 @@
+[
+  {
+    "source": "img/IMG_1244.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1244-640.webp",
+    "width": 640,
+    "height": 360,
+    "bytes": 43542,
+    "source_bytes": 1161669
+  },
+  {
+    "source": "img/IMG_1244.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1244-1280.webp",
+    "width": 1280,
+    "height": 720,
+    "bytes": 111662,
+    "source_bytes": 1161669
+  },
+  {
+    "source": "img/IMG_1244.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1244-1920.webp",
+    "width": 1920,
+    "height": 1080,
+    "bytes": 190722,
+    "source_bytes": 1161669
+  },
+  {
+    "source": "img/IMG_1259.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1259-480.webp",
+    "width": 480,
+    "height": 270,
+    "bytes": 12412,
+    "source_bytes": 876767
+  },
+  {
+    "source": "img/IMG_1259.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1259-960.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 27868,
+    "source_bytes": 876767
+  },
+  {
+    "source": "img/IMG_1259.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1259-1600.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 52514,
+    "source_bytes": 876767
+  },
+  {
+    "source": "img/IMG_1249.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1249-640.webp",
+    "width": 640,
+    "height": 360,
+    "bytes": 49292,
+    "source_bytes": 1657975
+  },
+  {
+    "source": "img/IMG_1249.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1249-1280.webp",
+    "width": 1280,
+    "height": 720,
+    "bytes": 129760,
+    "source_bytes": 1657975
+  },
+  {
+    "source": "img/IMG_1249.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1249-1920.webp",
+    "width": 1920,
+    "height": 1080,
+    "bytes": 219560,
+    "source_bytes": 1657975
+  },
+  {
+    "source": "img/IMG_1292.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1292-480.webp",
+    "width": 480,
+    "height": 270,
+    "bytes": 18612,
+    "source_bytes": 902345
+  },
+  {
+    "source": "img/IMG_1292.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1292-960.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 47784,
+    "source_bytes": 902345
+  },
+  {
+    "source": "img/IMG_1292.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1292-1600.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 89902,
+    "source_bytes": 902345
+  },
+  {
+    "source": "img/IMG_1311.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1311-480.webp",
+    "width": 480,
+    "height": 270,
+    "bytes": 24084,
+    "source_bytes": 1246967
+  },
+  {
+    "source": "img/IMG_1311.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1311-960.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 66090,
+    "source_bytes": 1246967
+  },
+  {
+    "source": "img/IMG_1311.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1311-1600.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 133682,
+    "source_bytes": 1246967
+  },
+  {
+    "source": "assets/images/church-prayer.jpg",
+    "file": "assets/images/optimized/church-prayer-480.webp",
+    "width": 480,
+    "height": 360,
+    "bytes": 62346,
+    "source_bytes": 954385
+  },
+  {
+    "source": "assets/images/church-prayer.jpg",
+    "file": "assets/images/optimized/church-prayer-960.webp",
+    "width": 960,
+    "height": 720,
+    "bytes": 209486,
+    "source_bytes": 954385
+  },
+  {
+    "source": "assets/images/church-prayer.jpg",
+    "file": "assets/images/optimized/church-prayer-1600.webp",
+    "width": 1600,
+    "height": 1200,
+    "bytes": 475992,
+    "source_bytes": 954385
+  },
+  {
+    "source": "img/IMG_1250.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1250-480.webp",
+    "width": 480,
+    "height": 270,
+    "bytes": 19934,
+    "source_bytes": 1523044
+  },
+  {
+    "source": "img/IMG_1250.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1250-960.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 58838,
+    "source_bytes": 1523044
+  },
+  {
+    "source": "img/IMG_1250.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1250-1600.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 125894,
+    "source_bytes": 1523044
+  },
+  {
+    "source": "img/IMG_1285.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1285-480.webp",
+    "width": 480,
+    "height": 270,
+    "bytes": 26364,
+    "source_bytes": 1392388
+  },
+  {
+    "source": "img/IMG_1285.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1285-960.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 77512,
+    "source_bytes": 1392388
+  },
+  {
+    "source": "img/IMG_1285.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1285-1600.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 153322,
+    "source_bytes": 1392388
+  },
+  {
+    "source": "img/IMG_1286.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1286-480.webp",
+    "width": 480,
+    "height": 270,
+    "bytes": 23268,
+    "source_bytes": 1261262
+  },
+  {
+    "source": "img/IMG_1286.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1286-960.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 61864,
+    "source_bytes": 1261262
+  },
+  {
+    "source": "img/IMG_1286.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1286-1600.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 122892,
+    "source_bytes": 1261262
+  },
+  {
+    "source": "img/IMG_1299.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1299-480.webp",
+    "width": 480,
+    "height": 270,
+    "bytes": 29950,
+    "source_bytes": 1368691
+  },
+  {
+    "source": "img/IMG_1299.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1299-960.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 85962,
+    "source_bytes": 1368691
+  },
+  {
+    "source": "img/IMG_1299.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1299-1600.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 172772,
+    "source_bytes": 1368691
+  },
+  {
+    "source": "img/IMG_1309.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1309-480.webp",
+    "width": 480,
+    "height": 270,
+    "bytes": 30536,
+    "source_bytes": 1570076
+  },
+  {
+    "source": "img/IMG_1309.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1309-960.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 87736,
+    "source_bytes": 1570076
+  },
+  {
+    "source": "img/IMG_1309.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1309-1600.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 181810,
+    "source_bytes": 1570076
+  },
+  {
+    "source": "img/IMG_1335.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1335-480.webp",
+    "width": 480,
+    "height": 270,
+    "bytes": 30990,
+    "source_bytes": 1817251
+  },
+  {
+    "source": "img/IMG_1335.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1335-960.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 99006,
+    "source_bytes": 1817251
+  },
+  {
+    "source": "img/IMG_1335.JPG.jpeg",
+    "file": "assets/images/optimized/IMG_1335-1600.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 213284,
+    "source_bytes": 1817251
+  },
+  {
+    "source": "assets/images/church-community.jpg",
+    "file": "assets/images/optimized/church-community-480.webp",
+    "width": 480,
+    "height": 360,
+    "bytes": 50600,
+    "source_bytes": 784231
+  },
+  {
+    "source": "assets/images/church-community.jpg",
+    "file": "assets/images/optimized/church-community-960.webp",
+    "width": 960,
+    "height": 720,
+    "bytes": 166856,
+    "source_bytes": 784231
+  },
+  {
+    "source": "assets/images/church-community.jpg",
+    "file": "assets/images/optimized/church-community-1600.webp",
+    "width": 1600,
+    "height": 1200,
+    "bytes": 354446,
+    "source_bytes": 784231
+  },
+  {
+    "source": "assets/images/hero-church.jpg",
+    "file": "assets/images/optimized/hero-church-480.webp",
+    "width": 480,
+    "height": 360,
+    "bytes": 58096,
+    "source_bytes": 1025270
+  },
+  {
+    "source": "assets/images/hero-church.jpg",
+    "file": "assets/images/optimized/hero-church-960.webp",
+    "width": 960,
+    "height": 720,
+    "bytes": 201418,
+    "source_bytes": 1025270
+  },
+  {
+    "source": "assets/images/hero-church.jpg",
+    "file": "assets/images/optimized/hero-church-1600.webp",
+    "width": 1600,
+    "height": 1200,
+    "bytes": 491494,
+    "source_bytes": 1025270
+  },
+  {
+    "source": "assets/images/pastor-dele.jpg",
+    "file": "assets/images/optimized/pastor-dele-480.webp",
+    "width": 480,
+    "height": 640,
+    "bytes": 25468,
+    "source_bytes": 355226
+  },
+  {
+    "source": "assets/images/pastor-dele.jpg",
+    "file": "assets/images/optimized/pastor-dele-960.webp",
+    "width": 960,
+    "height": 1280,
+    "bytes": 80042,
+    "source_bytes": 355226
+  }
+]

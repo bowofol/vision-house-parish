@@ -1,1 +1,39 @@
-.lightbox-prev,.lightbox-next{position:absolute;top:50%;z-index:2;display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.55);border-radius:50%;background:rgba(11,93,59,.82);color:#fff;font-size:30px;line-height:1;cursor:pointer;transform:translateY(-50%)}.lightbox-prev{left:22px}.lightbox-next{right:22px}.lightbox-prev:hover,.lightbox-next:hover{background:var(--secondary-green)}@media (max-width:620px){.lightbox-prev{left:8px}.lightbox-next{right:8px}.lightbox-prev,.lightbox-next{width:38px;height:38px;font-size:25px}}
+/* Native dialog supplies focus containment, Escape and an inert page. */
+.lightbox { width: min(1120px, calc(100% - 80px)); max-width: none; max-height: calc(100dvh - 60px); margin: auto; padding: 52px 20px 0; border: 0; color: var(--white); background: #092b1e; overflow: auto; }
+.lightbox::backdrop { background: rgba(3,17,10,.92); }
+.lightbox-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 160px; }
+.lightbox-image { width: auto; max-width: 100%; max-height: calc(100dvh - 190px); margin-inline: auto; object-fit: contain; }
+.lightbox-close, .lightbox-prev, .lightbox-next { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #a3b8a7; border-radius: 50%; color: var(--white); background: var(--deep-green); }
+.lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background: var(--forest); }
+.lightbox-close { position: absolute; top: 4px; right: 8px; }
+.lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; }
+.lightbox-prev { left: 10px; }
+.lightbox-next { right: 10px; }
+.lightbox-prev .icon { transform: rotate(180deg); }
+.lightbox :focus-visible { outline-color: var(--white); outline-offset: 3px; }
+.lightbox-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 18px; }
+.lightbox-caption { font-size: 13px; }
+.lightbox-count { color: #d2e1d2; font-size: 11px; white-space: nowrap; }
+
+/* A separate portrait player keeps the image-gallery dialog independent. */
+.video-lightbox { width: min(460px,calc(100% - 40px)); max-width: none; max-height: calc(100dvh - 32px); margin: auto; padding: 22px; border: 0; border-radius: 3px; color: var(--white); background: #092b1e; overflow: auto; }
+.video-lightbox::backdrop { background: rgba(3,17,10,.92); }
+.video-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.video-dialog-heading .eyebrow { margin-bottom: 6px; font-size: 9px; letter-spacing: .12em; }
+.video-dialog-heading h2 { font-size: 21px; line-height: 1.25; letter-spacing: -.02em; }
+.video-close { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; border: 1px solid #a3b8a7; border-radius: 50%; color: var(--white); background: var(--deep-green); transition: background-color .24s; }
+.video-close:hover { background: var(--forest); }
+.video-player { display: block; width: min(100%,calc((100dvh - 156px) * .5625)); height: auto; aspect-ratio: 9/16; margin-inline: auto; object-fit: contain; background: #000; }
+.modal-focus-guard { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.video-lightbox :focus-visible { outline-color: var(--white); outline-offset: 3px; }
+@media (max-width: 767px) {
+  .lightbox { width: calc(100% - 24px); padding: 52px 8px 0; max-height: calc(100dvh - 32px); }
+  .lightbox-image { max-height: calc(100dvh - 160px); }
+  .lightbox-prev { left: 3px; }
+  .lightbox-next { right: 3px; }
+  .lightbox-caption { font-size: 11px; }
+  .lightbox-footer { padding-inline: 8px; }
+  .video-lightbox { width: calc(100% - 32px); padding: 16px; }
+  .video-dialog-heading { gap: 12px; }
+  .video-dialog-heading h2 { font-size: 19px; }
+}

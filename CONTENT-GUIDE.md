@@ -1,64 +1,86 @@
-# RCCG Vision House Parish Content Guide
+# Vision House content guide
 
-This is a static HTML, CSS, and Vanilla JavaScript website. No build step or framework is required.
+The site is static HTML, CSS and JavaScript. Open index.html or serve the project root. No build step or JavaScript dependencies are required.
 
-## Run the site
+## Approved church details
 
-Open `index.html` directly in a browser, or serve the project folder with a static server. Keep the folder structure unchanged so relative asset paths continue to work.
+Update these details in index.html only after a confirmed change:
 
-## Brand and logo
+- RCCG Vision House Parish — Home of Peace Setters.
+- Pastor: Pst. Dele Oyediran. His photograph remains the supplied assets/images/pastor-dele.jpg.
+- Address: Behind Rofit School, Nurses Estate, City College, Karu.
+- Display number: 0803 701 1088.
+- Call link: tel:+2348037011088.
+- WhatsApp: https://wa.me/2348037011088.
+- Tuesday: Digging Deep, 6:00 PM–7:00 PM.
+- Thursday: Faith Clinic, 6:00 PM–7:00 PM.
+- First Saturday of each month: Hour of Triumph, 7:00 AM–8:00 AM.
+- Sunday: Family Worship, 9:00 AM–11:00 AM.
 
-- The official RCCG logo is loaded from `assets/images/rccg-logo.png`.
-- Replace that file with the approved logo while keeping the same filename, or update both `src="assets/images/rccg-logo.png"` references in `index.html`.
-- Green brand variables are defined in `css/polish.css`.
+Keep the vision and mission wording approved in the current HTML. No history, staff biography, testimonials, statistics, unconfirmed programmes, email or social accounts have been added.
 
-## Images
+## Design files
 
-Place approved church images in `assets/images/` using these names:
+- css/style.css: brand variables, typography and desktop layout.
+- css/responsive.css: tablet and mobile layouts.
+- css/animations.css: gentle reveals and reduced-motion support.
+- css/lightbox.css: separate native image and portrait-video dialogs.
+- js/main.js: navigation, gallery, reveals, lazy video playback and copyright year.
 
-- `hero-church.jpg` for the hero and wide worship gallery tile
-- `church-prayer.jpg` for the welcome section and prayer gallery tile
-- `church-community.jpg` for the featured worship section and community gallery tiles
-- `pastor-dele.jpg` for the pastor section
-- `digging-deep.jpg`, `faith-clinic.jpg`, `hour-of-triumph.jpg`, and `family-worship.jpg` for future program imagery
-- `gallery-01.jpg` through `gallery-06.jpg` for gallery images
+The former polish.css, real-images.css, fonts.css and logo.css overrides were consolidated into these styles.
 
-The supplied photographs are now active. Replace a file by keeping the same filename and path; no HTML or CSS change is needed.
+## Photography
 
-## Church information
+All visible photos come from the supplied church files. Preserve the originals. The website uses responsive WebP copies in assets/images/optimized.
 
-Confirmed church information is written in `index.html`: church name, pastor name, location, phone number, WhatsApp URL, vision, and mission. Update the visible text there if leadership approves a change. Do not add an email, social profile, biography, history, testimonials, statistics, or other unverified details.
+To regenerate them, run: python scripts/optimize_images.py
 
-## Programs and events
+The helper requires Pillow for asset preparation only; it is not a website dependency. It preserves orientation and aspect ratio and does not crop or change photo colours.
 
-The four weekly programs appear in the Services section, Events section, and footer. Update the name, day, time, and description in each matching HTML block:
+Images use srcset, sizes, explicit dimensions and lazy loading. The hero is loaded eagerly with high priority. Desktop and mobile have separate hero compositions so the full congregation remains visible on narrow screens.
 
-- Tuesday: Digging Deep, 6:00 PM – 7:00 PM
-- Thursday: Faith Clinic, 6:00 PM – 7:00 PM
-- First Saturday monthly: Hour of Triumph, 7:00 AM – 8:00 AM
-- Sunday: Family Worship, 9:00 AM – 11:00 AM
+To change a photo, update its src, every srcset entry, width/height and accurate alt text. For galleries also update the anchor href, data-caption and aria-label. The anchor opens the larger image even when JavaScript is disabled.
 
 ## Gallery
 
-Gallery items are the `.gallery-item` buttons in `index.html`. To add an image, add another button with a descriptive `data-caption` and a `.photo-surface` span whose CSS background points to the approved image. Keep the button structure so keyboard access and the lightbox continue to work.
+The eight anchors inside .gallery-grid open a native dialog. It supports next/previous controls, arrow keys, Escape, focus containment and focus return. Avoid near-duplicate pictures and do not identify an unconfirmed person as the pastor.
 
-## Contact and location
+## Motion and grid refinements
 
-The phone link is `tel:+2348025017870`. The WhatsApp link is `https://wa.me/2348025017870`. Update all matching links together if the number changes.
+Use `.reveal` with `.reveal-up`, `.reveal-left`, `.reveal-right` or `.reveal-scale` for a once-only entrance. Reserve `.reveal-image` for major images; a photo inside a figure uses `.image-reveal-frame` to clip the slight scale while keeping its caption visible.
 
-The location is intentionally text-only with a clearly marked map placeholder. When a verified Google Maps URL or embed is supplied, replace the placeholder in the Location section. Do not add coordinates based on an estimate.
+Group related entrances with `data-reveal-group data-stagger="80"`. Gallery and pillar delays reset for each visual row. Add `data-stagger-mode="batch"` for editorial groups such as the programme rows and contact actions. Delays apply only to items entering together and are capped at 240ms.
 
-## Deployment
+Content remains visible without JavaScript or observer support. Initially visible content, keyboard focus and section-link destinations appear immediately. Reduced motion removes entrance transitions, hero drift, image scaling and stagger delays. No animation library is required.
 
-For Netlify, drag the project folder into Netlify Drop or connect the repository and use the project root as the publish directory. For Vercel, import the repository, choose the project root, and deploy as a static site with no build command. Confirm that `index.html` is in the published root.
+Desktop retains the editorial schedule and asymmetric photographic layouts. From 768px through 1199px, Life uses a full-width feature above two supporting photographs, the gallery uses four complete two-photo rows, and the experience pillars use two columns. On smaller screens the Life and gallery photographs become single-column layouts.
 
-## Pre-launch checklist
+## Church video
 
-- Add only approved church and pastor photographs.
-- Add the official logo from the approved source.
-- Verify the address and map link with church leadership.
-- Test the phone and WhatsApp links on a mobile device.
-- Test the menu, gallery lightbox, Escape key, and arrow keys.
-- Check 320px, 375px, 425px, 768px, 1024px, and desktop widths.
-- Check for horizontal scrolling and browser console errors.
-- Confirm all copy, service times, and copyright year before publishing.
+The selected first recording, `img/WhatsApp Video 2026-10-04 at 2.27.19 AM.mp4`, is copied without re-encoding to `assets/videos/vision-house-worship.mp4`. Both original recordings remain in `img`; the second recording is not the primary website video.
+
+The recording is 576×1024 (9:16), approximately 31 seconds and 5.29 MB. It already has fast-start metadata, so its original quality and audio are preserved. The optimized 30.8 KB poster, `assets/images/optimized/vision-house-worship-poster.webp`, is a real frame at 12 seconds. It is maintained separately from the responsive photograph optimizer.
+
+Experience Vision House uses copy and the existing church photograph alongside a portrait preview. On mobile the copy, centered preview and supporting photograph stack in that order. The video opens in its own native dialog; the image gallery remains separate.
+
+The player has no initial `src`, uses `preload="none"` and never plays on page load. An explicit Watch Video action assigns the source and starts playback where the browser permits it. Native controls provide play/pause, volume and seeking. Closing, Escape or a backdrop click pauses playback and returns focus to the preview. The direct MP4 anchor remains usable without JavaScript or dialog support.
+
+For replacement footage, update the player's `data-source`, preview link, player fallback link, poster references, dimensions and duration label together. Preserve originals, use an optimized real poster and add approved captions/transcript when available. The supplied intro includes the burned-in `@YourChurchName` template handle; an owner-edited source is needed to correct that footage. The website poster uses a later worship frame.
+
+Use a static host that serves MP4 as `video/mp4` with byte-range support for efficient seeking. No video or animation library is required.
+
+## Location and directions
+
+The map iframe and all five Get Directions links search the approved written destination: Behind Rofit School, Nurses Estate, City College, Karu. Their queries were updated with the final official contact/location details. No coordinates or exact parish pin are supplied or claimed. Obtain a verified parish listing/embed to replace the address search with an exact pin. The visible address, call link and directions buttons remain available if the third-party map cannot load.
+
+## Metadata
+
+Title, description, RCCG favicon and Open Graph image/alt are present. The Open Graph image currently uses a relative path because no deployment domain was supplied. After selecting the official domain, use a complete HTTPS image URL and add the approved canonical URL.
+
+## External resources
+
+Google Fonts and the Google Maps embed require an internet connection. Serif and sans-serif fallbacks are supplied. Photos, logo, icons, layout and interactions are local.
+
+## Validation
+
+See REDESIGN-NOTES.md for the original image mapping and implementation report, REFINEMENT-NOTES.md for the animation/grid refinement, and MEDIA-UPDATE-NOTES.md for the final contact, address and video update.

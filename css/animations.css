@@ -1,1 +1,134 @@
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:none}.service-card:nth-child(2),.event-row:nth-child(2),.gallery-item:nth-child(2){transition-delay:.08s}.service-card:nth-child(3),.event-row:nth-child(3),.gallery-item:nth-child(3){transition-delay:.16s}.service-card:nth-child(4),.event-row:nth-child(4),.gallery-item:nth-child(4){transition-delay:.24s}.hero-content{animation:hero-in .9s ease both}.scroll-cue{animation:cue-in 1.2s .5s ease both}@keyframes hero-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}@keyframes cue-in{from{opacity:0}to{opacity:1}}@media (prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+/* Motion is progressive: only observer-managed, offscreen content is hidden. */
+.reveal {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity .76s var(--motion-ease) var(--reveal-delay, 0ms),
+    transform .76s var(--motion-ease) var(--reveal-delay, 0ms),
+    background-color .24s ease 0s,
+    border-color .24s ease 0s;
+}
+.reveal-up { --reveal-y: 26px; }
+.reveal-left { --reveal-x: -26px; --reveal-y: 0px; }
+.reveal-right { --reveal-x: 26px; --reveal-y: 0px; }
+.reveal-scale { --reveal-y: 0px; --reveal-scale: .985; }
+.js .reveal.reveal-pending {
+  opacity: 0;
+  transform: translate3d(var(--reveal-x, 0px), var(--reveal-y, 24px), 0) scale(var(--reveal-scale, 1));
+  /* Setup is immediate; the transition applies when pending is removed. */
+  transition: none;
+}
+.js .reveal.reveal-pending:focus-within {
+  opacity: 1;
+  transform: none;
+  transition-duration: 0s, 0s, .24s, .24s;
+  transition-delay: 0s;
+}
+.reveal.reveal-immediate {
+  transition-duration: 0s, 0s, .24s, .24s;
+  transition-delay: 0s;
+}
+
+/* Reserve a clipped image entrance for the major photographic moments. */
+.js .reveal-image.reveal-pending > img,
+.js .reveal-image.reveal-pending .image-reveal-frame > img { transform: scale(1.025); }
+.js .reveal-image.visible > img,
+.js .reveal-image.visible .image-reveal-frame > img {
+  animation: image-settle .85s var(--motion-ease) var(--reveal-delay, 0ms) backwards;
+}
+.js .reveal-image.visible.reveal-immediate > img,
+.js .reveal-image.visible.reveal-immediate .image-reveal-frame > img { animation: none; }
+@keyframes image-settle {
+  from { transform: scale(1.025); }
+  to { transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero-content > .eyebrow,
+  .js .hero-title-line,
+  .js .hero-lede,
+  .js .hero-content > .button-row,
+  .js .hero-location,
+  .js .sunday-inner {
+    animation: hero-enter .76s var(--motion-ease) var(--hero-delay, 0ms) backwards;
+  }
+  .hero-title-line { --hero-delay: 80ms; }
+  .hero-title-em { --hero-delay: 160ms; }
+  .hero-lede { --hero-delay: 240ms; }
+  .hero-content > .button-row { --hero-delay: 320ms; }
+  .hero-location { --hero-delay: 400ms; }
+  .sunday-inner { --hero-delay: 440ms; }
+}
+@keyframes hero-enter {
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to { opacity: 1; transform: none; }
+}
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .js .hero-image { animation: hero-drift 20s ease-out forwards; }
+}
+@keyframes hero-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.03); }
+}
+
+/* The mobile menu stays quick, with a short entrance for each link. */
+@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+  .js .site-nav.open > a {
+    animation: menu-enter .28s var(--motion-ease) var(--menu-delay, 0ms) backwards;
+  }
+  .site-nav > a:nth-child(2) { --menu-delay: 20ms; }
+  .site-nav > a:nth-child(3) { --menu-delay: 40ms; }
+  .site-nav > a:nth-child(4) { --menu-delay: 60ms; }
+  .site-nav > a:nth-child(5) { --menu-delay: 80ms; }
+  .site-nav > a:nth-child(6) { --menu-delay: 100ms; }
+  .site-nav > a:nth-child(n + 7) { --menu-delay: 120ms; }
+}
+@keyframes menu-enter {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: none; }
+}
+
+.schedule-day { transition: transform .24s var(--motion-ease); }
+@media (hover: hover) and (pointer: fine) {
+  .button:hover:not(:active) { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(7, 60, 41, .13); }
+  .button:hover .icon { transform: translate(3px, -1px); }
+  .text-link:hover .icon { transform: translateX(4px); }
+  .schedule-row:hover { background-color: #edf4ef; }
+  .schedule-sunday:hover { background-color: var(--deep-green); }
+  .schedule-row:hover .schedule-day { transform: translateX(2px); }
+  .gallery-item:hover > img { transform: scale(1.035); }
+  .gallery-item:hover::after { opacity: 1; }
+  .gallery-item:hover .gallery-caption { transform: translateY(-3px); }
+  .gallery-item:hover .gallery-caption .icon { transform: translate(2px, -2px); }
+  .connect-link:hover > .icon { transform: translate(3px, -3px); }
+  .connect-link:hover .connect-icon { background-color: var(--sage); border-color: var(--forest); }
+  .video-preview:hover .video-play { transform: translate(-50%,-50%) scale(1.04); background-color: var(--white); }
+}
+.video-preview:focus-visible .video-play { transform: translate(-50%,-50%) scale(1.04); }
+.gallery-item:focus-visible > img { transform: scale(1.035); }
+.gallery-item:focus-visible::after { opacity: 1; }
+.gallery-item:focus-visible .gallery-caption { transform: translateY(-3px); }
+
+@media (max-width: 767px) {
+  .js .reveal.reveal-pending.reveal-left,
+  .js .reveal.reveal-pending.reveal-right { transform: translate3d(0, 22px, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .reveal.reveal-pending { opacity: 1; transform: none; --reveal-delay: 0ms; }
+  .js .reveal-image.reveal-pending > img,
+  .js .reveal-image.reveal-pending .image-reveal-frame > img,
+  .button:hover,
+  .button:hover .icon,
+  .text-link:hover .icon,
+  .schedule-row:hover .schedule-day,
+  .gallery-item:hover > img,
+  .gallery-item:focus-visible > img,
+  .gallery-item:hover .gallery-caption,
+  .gallery-item:focus-visible .gallery-caption,
+  .gallery-item:hover .gallery-caption .icon,
+  .connect-link:hover > .icon { transform: none; }
+  .video-preview:hover .video-play,
+  .video-preview:focus-visible .video-play { transform: translate(-50%,-50%); }
+}

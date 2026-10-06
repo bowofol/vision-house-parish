@@ -1,2 +1,237 @@
-@media (max-width:900px){.container{width:min(100% - 40px,680px)}.site-nav{position:absolute;top:82px;right:20px;left:20px;display:grid;gap:0;padding:14px;background:var(--navy);box-shadow:0 20px 35px rgba(0,0,0,.2);opacity:0;visibility:hidden;transform:translateY(-10px);transition:.25s}.site-nav.open{opacity:1;visibility:visible;transform:none}.site-nav>a:not(.button){padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.08)}.site-nav .button{margin-top:12px}.menu-toggle{display:block}.hero{min-height:700px}.hero h1{font-size:clamp(47px,10vw,72px)}.service-grid{grid-template-columns:repeat(2,1fr)}.split-layout{gap:60px}.pastor-layout{grid-template-columns:.9fr 1.1fr}.footer-grid{grid-template-columns:repeat(2,1fr)}.location-grid{gap:50px}}@media (max-width:620px){.container{width:calc(100% - 36px)}.section{padding:78px 0}.nav-wrap{height:72px}.site-nav{top:72px;right:18px;left:18px}.hero{min-height:690px}.hero-content{padding-top:58px}.hero-lede{max-width:300px;font-size:16px}.hero-note{margin-top:60px}.scroll-cue{right:15px;bottom:28px}.split-layout,.vision-grid,.location-grid{grid-template-columns:1fr}.image-frame .photo-surface{height:370px}.image-frame{padding-left:17px}.section-heading{display:block;margin-bottom:35px}.section-intro{margin-top:18px}.service-grid{grid-template-columns:1fr 1fr;gap:10px}.service-card{min-height:246px;padding:23px 17px}.service-card a{left:17px;bottom:19px}.service-icon{margin-bottom:21px}.service-card h3{font-size:19px}.card-kicker{font-size:9px}.quote-banner{min-height:500px}.quote-content h2,.final-cta h2{font-size:clamp(42px,12vw,60px)}.vision-card{padding:32px 25px}.pastor-layout{display:flex;flex-direction:column}.pastor-photo{width:100%;padding-right:16px}.pastor-image{height:420px}.event-row{grid-template-columns:75px 1fr 25px;min-height:105px}.event-row h3{font-size:20px}.event-row:hover{padding:0 8px}.gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:180px;gap:9px}.item-wide{grid-column:span 2}.item-tall{grid-row:span 2}.location-grid{gap:38px}.map-placeholder{min-height:300px}.footer-grid{grid-template-columns:1fr 1fr;gap:38px 20px;padding-bottom:45px}.footer-grid>div:first-child{grid-column:span 2}.footer-bottom{display:block;line-height:1.8}.footer-bottom span{display:block}.footer-bottom span+span{margin-top:8px}.button{min-height:48px;padding:0 17px;font-size:11px}}
-@media (max-width:375px){.hero h1{font-size:44px}.service-card{min-height:255px;padding:20px 13px}.service-card a{left:13px}.service-card h3{font-size:17px}.event-row time{gap:5px}.event-row time strong{font-size:17px}.gallery-grid{grid-auto-rows:155px}.button-row{gap:9px}.button{padding:0 13px}.hero-note{font-size:9px}}
+/* Tablet and mobile adjustments */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .container { width: calc(100% - 72px); }
+  .brand strong { font-size: 18px; }
+  .brand small { font-size: 8px; }
+  .brand { gap: 10px; }
+  .church-logo { width: 46px; height: 46px; }
+  .nav-wrap { gap: 16px; }
+  .site-nav { gap: 15px; }
+  .site-nav > a:not(.button) { font-size: 11px; }
+  .site-nav .button { margin-left: 2px; padding-inline: 12px; gap: 9px; font-size: 11px; }
+  .services-layout { gap: 44px; grid-template-columns: .75fr 1.25fr; }
+  .schedule-row { grid-template-columns: 86px minmax(0,1fr) 116px; gap: 15px; padding-inline: 8px; }
+  .schedule-row h3 { font-size: 22px; }
+  .schedule-time { font-size: 10px; }
+  .pastor-layout, .vision-layout, .location-layout, .connect-layout { gap: 64px; }
+  .footer-grid { gap: 30px; }
+  .footer-brand strong { font-size: 17px; }
+}
+/* Recompose photographs into paired tablet rows rather than shrinking desktop. */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .experience-layout { gap: 28px 40px; }
+  .experience-feature > img { height: 260px; }
+  .featured-video { max-width: 280px; }
+  .life-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px 20px; }
+  .life-story-worship { grid-column: 1 / -1; }
+  .life-story-worship > img { height: clamp(340px,40vw,420px); }
+  .life-story-prayer, .life-story-community { margin-top: 0; }
+  .life-story-prayer > img, .life-story-community > img { height: clamp(260px,29vw,320px); }
+  .gallery-grid { grid-template-columns: repeat(2,minmax(0,1fr)); grid-auto-rows: clamp(260px,28vw,320px); }
+  .gallery-feature, .gallery-wide { grid-column: auto; grid-row: auto; }
+}
+@media (max-width: 1199px) {
+  .experience-pillars { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .experience-pillars > div { gap: 15px; padding: 18px 16px; border-bottom: 1px solid var(--line); }
+  .experience-pillars > div:nth-child(odd) { padding-left: 0; }
+  .experience-pillars > div:nth-child(even) { border-right: 0; }
+  .experience-pillars > div:nth-child(n+3) { border-bottom: 0; }
+  .experience-pillars > div:last-child { padding-left: 16px; }
+  .experience-pillars h3 { font-size: 25px; }
+}
+@media (max-width: 1023px) {
+  :root { --header-height: 78px; }
+  .container { width: calc(100% - 64px); }
+  .section { padding: 88px 0; }
+  .brand strong { font-size: 20px; }
+  .church-logo { width: 46px; height: 46px; }
+  .nav-wrap { position: relative; }
+  .menu-toggle { display: block; flex-shrink: 0; }
+  .site-nav { position: absolute; top: calc(100% + 1px); right: -32px; left: -32px; display: grid; gap: 0; max-height: calc(100dvh - 80px); padding: 16px 32px 25px; overflow-y: auto; background: var(--white); border-bottom: 1px solid var(--line); box-shadow: 0 16px 28px rgba(7,60,41,.1); visibility: hidden; opacity: 0; transform: translateY(-7px); transition: opacity .2s, transform .24s var(--motion-ease), visibility .2s; }
+  .site-nav.open { visibility: visible; opacity: 1; transform: none; }
+  .site-nav > a:not(.button) { min-height: 47px; padding: 12px 8px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .site-nav > a:not(.button)::after { display: none; }
+  .site-nav > .button { justify-self: start; margin: 18px 0 0; min-height: 48px; }
+  body.menu-open { overflow: hidden; }
+  html:not(.js) .site-header { position: static; }
+  html:not(.js) .nav-wrap { flex-wrap: wrap; padding-block: 15px; }
+  html:not(.js) .menu-toggle { display: none; }
+  html:not(.js) .site-nav { position: static; width: 100%; display: flex; flex-wrap: wrap; visibility: visible; opacity: 1; transform: none; padding: 0; box-shadow: none; border: 0; }
+  html:not(.js) .site-nav > a { margin: 0 14px 0 0; }
+  html:not(.js) .site-nav > .button { margin-top: 12px; }
+  .hero { min-height: 660px; }
+  .hero-content { padding-block: 64px 90px; }
+  .hero h1 { font-size: clamp(64px, 9.7vw, 88px); }
+  .hero::after { background: linear-gradient(90deg,rgba(3,32,19,.85),rgba(3,32,19,.54) 65%,rgba(3,32,19,.2)); }
+  .scroll-cue { left: 32px; }
+  .hero-photo-label { right: 32px; }
+  .sunday-time { padding-inline: 20px; font-size: 11px; }
+  .sunday-inner > .text-link { font-size: 11px; gap: 12px; }
+  .sunday-heading strong { font-size: 21px; }
+  .sunday-heading { gap: 12px; }
+  .welcome-grid { gap: 50px; }
+  .welcome-photo { margin-right: 12px; }
+  .welcome-photo::before, .image-tag { right: -12px; }
+  .welcome-image { height: 490px; }
+  .welcome-copy .large-copy { font-size: 20px; }
+  .welcome-copy > p:not(.eyebrow):not(.large-copy) { font-size: 13px; }
+  .services-layout { grid-template-columns: 1fr; gap: 40px; }
+  .services-copy > p:not(.eyebrow) { max-width: 520px; }
+  .services-note { margin-top: 18px; }
+  .schedule-row { grid-template-columns: 125px minmax(0,1fr) 150px; gap: 24px; }
+  .schedule-time { font-size: 12px; }
+  .experience-copy > p:last-child { font-size: 14px; }
+  .section-heading { gap: 30px; }
+  .section-intro { max-width: 245px; font-size: 13px; }
+  .vision-layout { grid-template-columns: .75fr 1.25fr; gap: 54px; }
+  .pastor-layout { gap: 50px; }
+  .pastor-photo { padding: 18px 18px 0; }
+  .pastor-photo img { height: 410px; }
+  .pastor-name h3 { font-size: 24px; }
+  .life-section { padding-top: 8px; }
+  .life-story h3 { font-size: 24px; }
+  .gallery-note { max-width: 200px; }
+  .location-layout { gap: 40px; }
+  .map-panel iframe { height: 350px; }
+  .connect-layout { gap: 55px; }
+  .connect-link strong { font-size: 23px; }
+  .visit-layout { gap: 36px; }
+  .visit-actions { min-width: 190px; }
+  .visit-section { padding: 76px 0; }
+  .footer-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 42px 60px; }
+}
+@media (max-width: 767px) {
+  :root { --header-height: 76px; }
+  .container { width: calc(100% - 40px); }
+  .section { padding: 70px 0; }
+  h2 { font-size: clamp(38px, 8.6vw, 54px); }
+  .eyebrow { font-size: 10px; margin-bottom: 18px; }
+  .welcome-bar-inner { justify-content: center; min-height: 32px; }
+  .welcome-bar-inner > span { display: none; }
+  .welcome-bar a { gap: 10px; font-size: 9px; }
+  .welcome-bar .icon { display: none; }
+  .brand { gap: 10px; }
+  .brand strong { font-size: 18px; }
+  .brand small { font-size: 8px; letter-spacing: .035em; }
+  .church-logo { width: 43px; height: 43px; }
+  .site-nav { right: -20px; left: -20px; padding-inline: 20px; }
+  /* Show the full congregation photo above the invitation on narrow screens. */
+  .hero { min-height: 0; display: block; }
+  .hero-image { height: auto; aspect-ratio: 16/9; object-fit: cover; object-position: center; }
+  .hero::after { bottom: auto; height: 56.25vw; background: linear-gradient(0deg,var(--deep-green),rgba(7,60,41,.06) 55%,transparent); }
+  .hero-content { padding-top: calc(56.25vw + 16px); padding-bottom: 42px; }
+  .hero h1 { font-size: clamp(47px, 12.4vw, 78px); }
+  .hero-lede { max-width: 470px; font-size: 14px; line-height: 1.85; margin-block: 22px 26px; }
+  .hero-location { margin-top: 29px; font-size: 10px; }
+  .hero-location span { padding-left: 13px; margin-left: 4px; font-size: 9px; }
+  .hero .eyebrow { font-size: 9px; }
+  .eyebrow-line { width: 22px; margin-right: 9px; }
+  .scroll-cue, .hero-photo-label { display: none; }
+  .button { min-height: 50px; padding-inline: 19px; font-size: 12px; gap: 18px; }
+  .sunday-invitation { padding: 23px 0; }
+  .sunday-inner { flex-wrap: wrap; gap: 16px 20px; }
+  .sunday-heading { flex: 1; }
+  .sunday-heading > .icon { width: 29px; height: 29px; flex-basis: 29px; }
+  .sunday-heading small { font-size: 9px; }
+  .sunday-heading strong { font-size: 20px; }
+  .sunday-time { padding-inline: 0; border: 0; font-size: 10px; gap: 7px; }
+  .sunday-time .icon { width: 15px; height: 15px; flex-basis: 15px; }
+  .sunday-inner > .text-link { width: 100%; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 10px; }
+  .welcome-grid, .pastor-layout, .vision-layout, .location-layout, .connect-layout { grid-template-columns: 1fr; gap: 42px; }
+  .welcome-photo { margin-right: 12px; }
+  .welcome-image { height: 380px; object-position: 56% 48%; }
+  .welcome-photo::before { bottom: 55px; height: 85%; }
+  .welcome-photo figcaption { font-size: 9px; padding-top: 16px; }
+  .image-tag { bottom: 62px; padding: 13px 18px; font-size: 10px; }
+  .welcome-copy .large-copy { font-size: 22px; }
+  .welcome-copy > p:not(.eyebrow):not(.large-copy) { font-size: 14px; }
+  .welcome-copy h2 { margin-bottom: 22px; }
+  .services-layout { gap: 34px; }
+  .services-copy > p:not(.eyebrow) { font-size: 14px; }
+  .services-note { margin-top: 13px; }
+  .schedule-row { grid-template-columns: 90px minmax(0,1fr); gap: 3px 22px; min-height: 114px; padding: 23px 12px; }
+  .schedule-day { grid-row: span 2; font-size: 9px; }
+  .schedule-row h3 { font-size: 25px; }
+  .schedule-row p { font-size: 10px; }
+  .schedule-time { grid-column: 2; text-align: left; margin-top: 8px; font-size: 11px; }
+  .section-heading { display: block; margin-bottom: 32px; }
+  .section-intro { max-width: 450px; margin-top: 23px; padding: 0; font-size: 14px; }
+  .experience-layout { grid-template-columns: 1fr; gap: 28px; }
+  .experience-copy { grid-column: 1; grid-row: 1; }
+  .experience-copy > p:last-child { margin-top: 22px; }
+  .featured-video { grid-column: 1; grid-row: 2; max-width: 260px; }
+  .experience-feature { grid-column: 1; grid-row: 3; }
+  .experience-feature > img { height: 220px; object-position: 49% 58%; }
+  .photo-corner-label { padding: 14px 19px; font-size: 16px; }
+  .experience-pillars { margin-top: 18px; }
+  .vision-heading > p:last-child { margin-top: 20px; }
+  .vision-statement h3 { font-size: 29px; }
+  .vision-statement p { font-size: 14px; }
+  .pastor-photo { max-width: 430px; width: 100%; margin-inline: auto; padding: 20px 20px 0; }
+  .pastor-photo img { height: auto; aspect-ratio: 3/4; object-fit: contain; }
+  .pastor-copy h2 { margin-bottom: 26px; }
+  .pastor-name { padding-bottom: 22px; margin-bottom: 22px; }
+  .life-section { padding-top: 8px; }
+  .life-grid { grid-template-columns: 1fr; gap: 34px; }
+  .life-story-prayer, .life-story-community { margin-top: 0; }
+  .life-story > img { height: 330px; }
+  .life-story-worship > img { object-position: 40% 42%; }
+  .life-story figcaption { margin-top: 16px; }
+  .life-story h3 { font-size: 29px; }
+  .gallery-note { margin-top: 20px; max-width: none; }
+  .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 260px; gap: 14px; }
+  .gallery-feature, .gallery-wide { grid-column: 1; grid-row: auto; }
+  .gallery-feature > img { object-position: 54% 52%; }
+  .gallery-caption { font-size: 12px; }
+  .map-panel iframe { height: 340px; }
+  .location-copy h3 { font-size: 14px; }
+  .location-copy address { font-size: 15px; }
+  .connect-link { min-height: 100px; gap: 16px; }
+  .connect-link strong { font-size: 24px; }
+  .connect-copy > p:not(.eyebrow) { font-size: 14px; }
+  .visit-section { padding: 70px 0; }
+  .visit-layout { display: block; }
+  .visit-section p:not(.eyebrow) { margin-top: 23px; font-size: 13px; }
+  .visit-section p br { display: none; }
+  .visit-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: start; gap: 15px 28px; min-width: 0; margin-top: 30px; }
+  .visit-actions .button { width: auto; }
+  .site-footer { padding-top: 56px; }
+  .footer-grid { gap: 36px 26px; padding-bottom: 36px; }
+  .footer-identity { grid-column: span 2; }
+  .footer-brand strong { font-size: 22px; }
+  .footer-grid > div:last-child { grid-column: span 2; }
+  .site-footer h3 { margin-bottom: 17px; }
+  .footer-links { font-size: 12px; gap: 11px; }
+  .footer-services p > span { font-size: 11px; }
+  .footer-bottom { align-items: flex-start; flex-direction: column; gap: 6px; padding-block: 20px; font-size: 9px; }
+}
+@media (max-width: 374px) {
+  .container { width: calc(100% - 32px); }
+  .brand strong { font-size: 16px; }
+  .brand small { font-size: 7px; }
+  .church-logo { width: 38px; height: 38px; }
+  .nav-wrap { gap: 10px; }
+  .brand { gap: 8px; }
+  .site-nav { left: -16px; right: -16px; }
+  .hero h1 { font-size: 46px; }
+  .hero .button-row { gap: 10px; }
+  .hero .button { padding-inline: 15px; gap: 12px; font-size: 11px; }
+  .hero-location span { font-size: 8px; padding-left: 9px; }
+  .hero-location { gap: 7px; }
+  .sunday-heading { flex-basis: 100%; }
+  .sunday-time { margin-left: 41px; }
+  .welcome-image { height: 330px; }
+  .schedule-row { grid-template-columns: 76px minmax(0,1fr); gap: 3px 16px; padding-inline: 8px; }
+  .schedule-row h3 { font-size: 23px; }
+  .experience-feature > img { height: 190px; }
+  .experience-pillars h3 { font-size: 21px; }
+  .experience-pillars > div { gap: 10px; }
+  .experience-pillars > div:last-child { padding-left: 10px; }
+  .life-story > img { height: 280px; }
+  .gallery-grid { grid-auto-rows: 230px; }
+  .connect-link strong { font-size: 22px; }
+  .connect-link { gap: 11px; }
+  .connect-icon { width: 40px; height: 40px; flex-basis: 40px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+  .footer-identity, .footer-grid > div:last-child { grid-column: 1; }
+}
