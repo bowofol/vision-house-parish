@@ -1,4 +1,4 @@
-﻿"""Create responsive WebP assets from approved original parish photographs.
+﻿"""Create responsive WebP assets from approved original area church photographs.
 
 Run: python scripts/optimize_images.py
 Requires Pillow. Originals are preserved; images are resized without cropping.

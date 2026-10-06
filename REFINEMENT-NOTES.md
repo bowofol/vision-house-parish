@@ -19,7 +19,7 @@ Local screenshots, the before-refinement snapshot and the browser check script a
 
 ## Tagline
 
-The title and Open Graph title now read **RCCG Vision House Parish — Home of Peace Setters**. The correction also covers the hero, desktop/mobile branding, footer, descriptions and approved-content guide. No old tagline remains in maintained project files.
+The title and Open Graph title now read **RCCG Vision House Area — Home of Pace Setters**. The correction also covers the hero, desktop/mobile branding, footer, descriptions and approved-content guide. No old tagline remains in maintained project files.
 
 ## Animation and interactions
 

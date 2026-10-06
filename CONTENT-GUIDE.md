@@ -6,7 +6,7 @@ The site is static HTML, CSS and JavaScript. Open index.html or serve the projec
 
 Update these details in index.html only after a confirmed change:
 
-- RCCG Vision House Parish — Home of Peace Setters.
+- RCCG Vision House Area — Home of Pace Setters.
 - Pastor: Pst. Dele Oyediran. His photograph remains the supplied assets/images/pastor-dele.jpg.
 - Address: Behind Rofit School, Nurses Estate, City College, Karu.
 - Display number: 0803 701 1088.
@@ -29,6 +29,24 @@ Keep the vision and mission wording approved in the current HTML. No history, st
 
 The former polish.css, real-images.css, fonts.css and logo.css overrides were consolidated into these styles.
 
+## Approved brand palette
+
+The official identity is **RCCG Vision House Area — Home of Pace Setters**. Use **Vision House Area** when a shorter display name is needed.
+
+Maintain the green, white and navy palette in `css/style.css`:
+
+| Token | Color | Use |
+| --- | --- | --- |
+| `--forest` | `#0B5D3B` | Primary buttons, brand name, active navigation and green accents. |
+| `--green` | `#148A5A` | Focus indicators and small graphic accents. |
+| `--deep-navy` | `#0B1F3A` | Section headings, footer, mobile hero and modal backgrounds. |
+| `--navy` | `#12345B` | Navigation, secondary button text and the visit band. |
+| `--white` | `#FFFFFF` | Main surfaces and light text. |
+| `--cream` | `#F7FAF8` | Soft section backgrounds. |
+| `--ink` | `#17201B` | Main body text. |
+
+Forest provides strong contrast for small white button text. Rich green is reserved for graphic accents and focus rather than small white-text fills. Navy sections use white, light mint or `--on-dark-muted` (`#CBD8E5`) text; focus outlines are white on dark backgrounds. Keep the existing subtle photo overlay, typography, responsive layouts, hover effects and reduced-motion support.
+
 ## Photography
 
 All visible photos come from the supplied church files. Preserve the originals. The website uses responsive WebP copies in assets/images/optimized.
@@ -49,9 +67,15 @@ The eight anchors inside .gallery-grid open a native dialog. It supports next/pr
 
 Use `.reveal` with `.reveal-up`, `.reveal-left`, `.reveal-right` or `.reveal-scale` for a once-only entrance. Reserve `.reveal-image` for major images; a photo inside a figure uses `.image-reveal-frame` to clip the slight scale while keeping its caption visible.
 
-Group related entrances with `data-reveal-group data-stagger="80"`. Gallery and pillar delays reset for each visual row. Add `data-stagger-mode="batch"` for editorial groups such as the programme rows and contact actions. Delays apply only to items entering together and are capped at 240ms.
+Group related entrances with `data-reveal-group data-stagger="80"`. Gallery and pillar delays reset for each visual row. Add `data-stagger-mode="batch"` for editorial groups such as the programme rows and contact actions. Ordinary groups use 80ms steps capped at 240ms. The weekly schedule uses `data-stagger="120"`, with programme delays capped at 360ms and a 20px upward entrance. Each item reveals once.
 
-Content remains visible without JavaScript or observer support. Initially visible content, keyboard focus and section-link destinations appear immediately. Reduced motion removes entrance transitions, hero drift, image scaling and stagger delays. No animation library is required.
+Content remains visible without JavaScript or observer support. Initially visible content, keyboard focus and section-link destinations appear immediately. Reduced motion removes entrance transitions, hero zoom, image scaling, button movement and stagger delays. No animation library is required.
+
+The hero uses the temporary `hero-intro` class for one initial entrance: its image settles from 1.05 scale to its original size over 1.35 seconds while the eyebrow, two heading lines, paragraph and individual buttons enter in sequence. The class ends after 1.5 seconds or immediately when reduced motion is enabled. Scrolling and changing the preference back do not restart it. Settled text remains visible if JavaScript fails.
+
+Use `motion-heading` on an existing reveal wrapper to sequence its label, a thin accent line, main heading and supporting paragraph. Use `motion-statement` on Vision/Mission articles for the related label/heading/text sequence. The lines occupy existing label spacing and do not change layout. The existing `reveal-immediate` safeguard bypasses nested animations for initial content, focus, hash destinations and fallbacks.
+
+The navbar retains its height and logo layout box while scrolling adds a subtle shadow, supported backdrop blur and a slight logo transform. This avoids movement in the page layout and preserves mobile-menu positioning. Desktop CTA hover uses a 2px lift and restrained icon movement; tapping produces a small press effect. Gallery zoom remains 1.035, and only the welcome/supporting photograph containers receive a 1.02 hover zoom with clipped overflow. The video preview and modal retain their approved behavior.
 
 Desktop retains the editorial schedule and asymmetric photographic layouts. From 768px through 1199px, Life uses a full-width feature above two supporting photographs, the gallery uses four complete two-photo rows, and the experience pillars use two columns. On smaller screens the Life and gallery photographs become single-column layouts.
 
@@ -71,7 +95,7 @@ Use a static host that serves MP4 as `video/mp4` with byte-range support for eff
 
 ## Location and directions
 
-The map iframe and all five Get Directions links search the approved written destination: Behind Rofit School, Nurses Estate, City College, Karu. Their queries were updated with the final official contact/location details. No coordinates or exact parish pin are supplied or claimed. Obtain a verified parish listing/embed to replace the address search with an exact pin. The visible address, call link and directions buttons remain available if the third-party map cannot load.
+The map iframe and all five Get Directions links search the approved written destination: Behind Rofit School, Nurses Estate, City College, Karu. Their queries were updated with the final official contact/location details. No coordinates or exact area church pin are supplied or claimed. Obtain a verified area church listing/embed to replace the address search with an exact pin. The visible address, call link and directions buttons remain available if the third-party map cannot load.
 
 ## Metadata
 
@@ -83,4 +107,4 @@ Google Fonts and the Google Maps embed require an internet connection. Serif and
 
 ## Validation
 
-See REDESIGN-NOTES.md for the original image mapping and implementation report, REFINEMENT-NOTES.md for the animation/grid refinement, and MEDIA-UPDATE-NOTES.md for the final contact, address and video update.
+See REDESIGN-NOTES.md for the original image mapping and implementation report, REFINEMENT-NOTES.md for the earlier animation/grid refinement, MEDIA-UPDATE-NOTES.md for the final contact, address and video update, BRAND-UPDATE-NOTES.md for the leadership-approved identity and color update, and ANIMATION-POLISH-NOTES.md for the final motion and interaction polish.

@@ -8,6 +8,18 @@
   const siteNav = document.querySelector('.site-nav');
   const desktopQuery = window.matchMedia('(min-width: 1024px)');
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let heroIntroTimer;
+
+  const finishHeroIntro = () => {
+    document.documentElement.classList.remove('hero-intro');
+    window.clearTimeout(heroIntroTimer);
+    heroIntroTimer = undefined;
+  };
+
+  if (!motionQuery.matches) {
+    document.documentElement.classList.add('hero-intro');
+    heroIntroTimer = window.setTimeout(finishHeroIntro, 1500);
+  }
 
   const closeMenu = ({ returnFocus = false } = {}) => {
     if (!siteNav || !menuToggle) return;
@@ -114,6 +126,7 @@
   const revealOrder = new Map(revealElements.map((element, index) => [element, index]));
   const revealGroups = new Map();
   const revealLayout = new Map();
+  const programmeRevealStarts = new WeakMap();
   let revealObserver;
   let revealResizeObserver;
   let revealResizeFrame;
@@ -135,7 +148,7 @@
   // Read row positions only during setup or a layout resize, never on scroll.
   const updateRevealRows = () => {
     revealGroups.forEach((elements, group) => {
-      const step = Math.min(80, Math.max(0, Number(group.dataset.stagger) || 80));
+      const step = Math.min(120, Math.max(0, Number(group.dataset.stagger) || 80));
       const rows = [...elements].sort((a, b) =>
         a.offsetTop - b.offsetTop || revealOrder.get(a) - revealOrder.get(b));
       let row = -1;
@@ -148,7 +161,9 @@
         revealLayout.set(element, {
           group,
           row: group.dataset.staggerMode === 'batch' ? 'batch' : row,
-          step
+          step,
+          maxDelay: step * 3,
+          sequential: step === 120 && group.classList.contains('schedule')
         });
       });
     });
@@ -180,9 +195,18 @@
           batches.forEach((groupBatches) => {
             groupBatches.forEach((elements) => {
               elements.sort((a, b) => revealOrder.get(a) - revealOrder.get(b));
+              const now = window.performance.now();
               elements.forEach((element, index) => {
-                const step = revealLayout.get(element)?.step || 0;
-                showReveal(element, Math.min(index * step, 240));
+                const layout = revealLayout.get(element);
+                const step = layout?.step || 0;
+                let delay = Math.min(index * step, layout?.maxDelay || 0);
+                if (layout?.sequential) {
+                  // Keep programme order across fast-scroll observer batches.
+                  const lastStart = programmeRevealStarts.get(layout.group);
+                  delay = Math.min(Math.max(0, (lastStart ?? now - step) + step - now), layout.maxDelay);
+                  programmeRevealStarts.set(layout.group, now + delay);
+                }
+                showReveal(element, delay);
               });
             });
           });
@@ -256,7 +280,10 @@
   revealHashDestination();
 
   const handleRevealMotionChange = (event) => {
-    if (event.matches) showAllReveals();
+    if (event.matches) {
+      finishHeroIntro();
+      showAllReveals();
+    }
   };
   if (motionQuery.addEventListener) motionQuery.addEventListener('change', handleRevealMotionChange);
   else motionQuery.addListener(handleRevealMotionChange);

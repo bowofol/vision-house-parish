@@ -62,7 +62,7 @@
   .hero { min-height: 660px; }
   .hero-content { padding-block: 64px 90px; }
   .hero h1 { font-size: clamp(64px, 9.7vw, 88px); }
-  .hero::after { background: linear-gradient(90deg,rgba(3,32,19,.85),rgba(3,32,19,.54) 65%,rgba(3,32,19,.2)); }
+  .hero::after { background: linear-gradient(90deg,rgba(11,31,58,.85),rgba(11,31,58,.54) 65%,rgba(7,60,41,.2)); }
   .scroll-cue { left: 32px; }
   .hero-photo-label { right: 32px; }
   .sunday-time { padding-inline: 20px; font-size: 11px; }
@@ -118,7 +118,7 @@
   /* Show the full congregation photo above the invitation on narrow screens. */
   .hero { min-height: 0; display: block; }
   .hero-image { height: auto; aspect-ratio: 16/9; object-fit: cover; object-position: center; }
-  .hero::after { bottom: auto; height: 56.25vw; background: linear-gradient(0deg,var(--deep-green),rgba(7,60,41,.06) 55%,transparent); }
+  .hero::after { bottom: auto; height: 56.25vw; background: linear-gradient(0deg,var(--deep-navy),rgba(11,31,58,.06) 55%,transparent); }
   .hero-content { padding-top: calc(56.25vw + 16px); padding-bottom: 42px; }
   .hero h1 { font-size: clamp(47px, 12.4vw, 78px); }
   .hero-lede { max-width: 470px; font-size: 14px; line-height: 1.85; margin-block: 22px 26px; }

@@ -1,6 +1,6 @@
 # Final media, location and contact update
 
-This update preserves the completed parish design, section order, hero, typography, photographs, service information, pastor details, gallery and animation system. The Experience section now presents the selected church recording alongside its existing supporting photograph.
+This update preserves the completed area church design, section order, hero, typography, photographs, service information, pastor details, gallery and animation system. The Experience section now presents the selected church recording alongside its existing supporting photograph.
 
 ## Files changed
 
@@ -36,7 +36,7 @@ City College, Karu
 
 Metadata, map captions and accessibility labels use the same written destination. All five Get Directions actions search **Behind Rofit School, Nurses Estate, City College, Karu**. The responsive Google Maps iframe uses that address as its query.
 
-No latitude/longitude or exact verified church pin is supplied or claimed. An owner-provided verified Google Maps listing/pin is still needed to replace the address search with an exact parish marker.
+No latitude/longitude or exact verified church pin is supplied or claimed. An owner-provided verified Google Maps listing/pin is still needed to replace the address search with an exact area church marker.
 
 ## Video implementation
 

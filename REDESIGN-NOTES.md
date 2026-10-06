@@ -1,6 +1,6 @@
 # Vision House website remodel
 
-This report records the original responsive redesign around the supplied parish photography and established RCCG green-and-white identity. Approved parish details, mission, vision, pastor identification and service times were retained. The later final contact/location update replaces the phone, WhatsApp and written-address map/directions queries; current approved details are in CONTENT-GUIDE.md.
+This report records the original responsive redesign around the supplied area church photography and established RCCG green-and-white identity. Approved area church details, mission, vision, pastor identification and service times were retained. The later final contact/location update replaces the phone, WhatsApp and written-address map/directions queries; current approved details are in CONTENT-GUIDE.md.
 
 ## Files changed
 
@@ -70,7 +70,7 @@ The old decorative map/photo panel was replaced with a Google Maps embed that se
 ## Items still requiring actual content
 
 - An approved local video, with captions/transcript where appropriate, to enable the prepared player.
-- A verified parish Google Maps listing/embed if an exact church pin is wanted. The map and all five directions actions now search Behind Rofit School, Nurses Estate, City College, Karu without fabricated coordinates.
+- A verified area church Google Maps listing/embed if an exact church pin is wanted. The map and all five directions actions now search Behind Rofit School, Nurses Estate, City College, Karu without fabricated coordinates.
 - The official deployment domain to make the social-image URL absolute and add a confirmed canonical URL.
 
 Google Fonts and Google Maps require internet access. Local typography fallbacks and visible address/directions remain available.
@@ -91,4 +91,4 @@ Completed in local headless Chrome, using an isolated review profile.
 
 The first rendering check exposed 320px label spacing and a gallery Tab-wrap issue. Both were fixed and the final browser run passed.
 
-Desktop and phone viewport/full-page screenshots, the exact results and the dependency-free verification script are kept locally in .review, which is excluded from version control. The Google Maps embed uses the approved written address; this validation does not establish an exact parish pin. No actual video was available to test playback.
+Desktop and phone viewport/full-page screenshots, the exact results and the dependency-free verification script are kept locally in .review, which is excluded from version control. The Google Maps embed uses the approved written address; this validation does not establish an exact area church pin. No actual video was available to test playback.

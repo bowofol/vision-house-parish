@@ -1,4 +1,4 @@
-# Approved parish images
+# Approved area church images
 
 The official logo is rccg-logo.png. Pastor Dele Oyediran's approved portrait is pastor-dele.jpg. Keep both identities intact.
 
