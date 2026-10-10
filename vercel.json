@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/register.js": {
+      "maxDuration": 20
+    }
+  },
+  "routes": [
+    {
+      "src": "/(?:lib|scripts|tests|apps-script|\\.review|\\.git|\\.github)(?:/.*)?",
+      "status": 404
+    },
+    {
+      "src": "/(?:\\.env(?:\\..*)?|package(?:-lock)?\\.json|vercel\\.json|.*\\.md)",
+      "status": 404
+    },
+    {
+      "handle": "filesystem"
+    }
+  ]
+}

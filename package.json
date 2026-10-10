@@ -1,0 +1,12 @@
+{
+  "name": "rccg-vision-house-area",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env.local scripts/dev-server.js",
+    "test": "node --test"
+  }
+}
