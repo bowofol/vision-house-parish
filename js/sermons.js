@@ -19,6 +19,8 @@
     const date = new Date(`${value}T00:00:00Z`);
     return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
   };
+  const hasDisplayDate = record => validDate(clean(record.date)) ||
+    (!clean(record.date) && record.dateType === 'publication' && Boolean(clean(record.approximatePublicationLabel)));
   // Project-relative paths only: no protocols, traversal, query strings or remote photos.
   const pathPattern = (folder, extensions) => new RegExp(`^${folder}/(?:[A-Za-z0-9_-][A-Za-z0-9._-]*/)*[A-Za-z0-9_-][A-Za-z0-9._-]*\\.(?:${extensions})$`, 'i');
   const imagePath = pathPattern('assets/images', 'jpe?g|png|webp|avif');
@@ -41,7 +43,7 @@
   raw.forEach(record => { const id = clean(record?.id); counts.set(id, (counts.get(id) || 0) + 1); });
   const records = raw.filter(record => record?.published === true &&
     ['id', 'title', 'preacher', 'description', 'thumbnail'].every(key => clean(record[key])) &&
-    counts.get(clean(record.id)) === 1 && validDate(record.date) && imagePath.test(clean(record.thumbnail)) &&
+    counts.get(clean(record.id)) === 1 && hasDisplayDate(record) && imagePath.test(clean(record.thumbnail)) &&
     (!clean(record.preacherPhoto) || imagePath.test(clean(record.preacherPhoto))) &&
     (!clean(record.captionsSrc) || captionPath.test(clean(record.captionsSrc))) &&
     ((videoPath.test(clean(record.videoSrc)) && !clean(record.youtubeUrl)) ||
@@ -49,6 +51,7 @@
     .map(record => ({ ...record, id: clean(record.id), title: clean(record.title),
       preacher: clean(record.preacher), preacherPhoto: clean(record.preacherPhoto),
       thumbnail: clean(record.thumbnail), description: clean(record.description),
+      date: clean(record.date), approximatePublicationLabel: clean(record.approximatePublicationLabel),
       videoSrc: clean(record.videoSrc), youtubeId: youtubeId(record.youtubeUrl),
       category: clean(record.category), passage: clean(record.passage), captionsSrc: clean(record.captionsSrc) }))
     .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
@@ -57,6 +60,7 @@
   if (!records.length) return;
   const dateFormat = new Intl.DateTimeFormat('en-NG', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
   const dateText = record => {
+    if (!record.date) return record.approximatePublicationLabel;
     const formatted = dateFormat.format(new Date(`${record.date}T00:00:00Z`));
     if (record.dateType === 'publication') {
       return `${record.dateApproximate === true ? 'Published around' : 'Published'} ${formatted}`;
@@ -146,7 +150,9 @@
     thumbnail.append(image, play, create('span', 'sermon-thumbnail-label', record.youtubeId ? 'YouTube' : 'Sermon video'));
     const body = create('div', 'sermon-card-body');
     const meta = create('div', 'sermon-meta');
-    const time = create('time', '', dateText(record)); time.dateTime = record.date; meta.append(time);
+    const date = create(record.date ? 'time' : 'span', '', dateText(record));
+    if (record.date) date.dateTime = record.date;
+    meta.append(date);
     if (record.category) meta.append(create('span', 'sermon-category-label', record.category));
     const title = create('h3', '', record.title); title.id = `sermon-${featured ? 'featured-' : ''}title-${index}`;
     article.setAttribute('aria-labelledby', title.id);

@@ -23,9 +23,10 @@ Open **`js/data/sermons.js`**. Copy this blank template between the `[` and `]` 
   title: '',               // The actual sermon title.
   preacher: '',             // The actual preacher's name.
   preacherPhoto: '',        // assets/images/preachers/your-photo.jpg
-  date: '',                // Date used for display and sorting: YYYY-MM-DD.
+  date: '',                // YYYY-MM-DD, or blank with an approved publication label.
   dateType: 'sermon',       // Use 'publication' for the video's upload date.
   dateApproximate: false,   // Use true only for an estimated publication date.
+  approximatePublicationLabel: '', // Optional approved label when date is blank.
   thumbnail: '',           // assets/images/sermon-thumbnails/your-thumbnail.jpg
   description: '',         // A short description of this sermon.
   videoSrc: '',            // assets/videos/sermons/your-sermon.mp4
@@ -36,11 +37,13 @@ Open **`js/data/sermons.js`**. Copy this blank template between the `[` and `]` 
 }
 ```
 
-Required: a unique `id`, `title`, `preacher`, `date`, `thumbnail`, `description`, and **one** video source. Surround text, dates and file paths with quotes. By default, the date is the verified day the message was preached. If only the upload date is known, set `dateType: 'publication'`; cards and the player will explicitly label it "Published". For a church-approved provisional upload estimate, also set `dateApproximate: true` to display "Published around". Never present an estimated upload date as a verified preaching date. Entries without these optional fields keep their existing date display.
+Required: a unique `id`, `title`, `preacher`, `thumbnail`, `description`, **one** video source, and either a valid `date` or an approved approximate publication label. Surround text, dates and file paths with quotes. By default, the date is the verified day the message was preached. If only the upload date is known, set `dateType: 'publication'`; cards and the player will explicitly label it "Published". For a church-approved provisional upload estimate, also set `dateApproximate: true` to display "Published around". Never present an estimated upload date as a verified preaching date. Entries without these optional fields keep their existing date display.
+
+If no exact date is known, leave `date: ''`, set `dateType: 'publication'`, and enter an approved `approximatePublicationLabel`, such as "Uploaded approximately 3 weeks ago (as of 14 October 2026)". Include the reference date so a relative upload age does not become misleading later. This label appears unchanged in cards and the player, without creating an exact date or a `datetime` attribute. A nonblank invalid date is rejected even if a label is supplied; a valid date takes precedence over the label. Keep `published: false` until the entry is reviewed and approved.
 
 The first entry, "Go Deeper With God", uses **2026-10-11 as a provisional publication date**, inferred from a relative YouTube upload age supplied by the church. Neither the exact upload date nor the preaching date has been verified. Confirm the date before publishing if an exact date is required, then update the date metadata as appropriate.
 
-To add another sermon, place a comma after the previous object and paste another object inside the same array. Save the file. Entries are sorted by date, newest first. The newest published entry is featured unless you set `featured: true` on another entry. If multiple entries are marked featured, the newest of those is selected.
+To add another sermon, place a comma after the previous object and paste another object inside the same array. Save the file. Dated entries are sorted newest first; entries with labels only appear afterward, alphabetically by title. The renderer does not infer chronological order from relative upload labels. The first published entry in this order is featured unless you set `featured: true` on another entry. If multiple entries are marked featured, the first of those in this order is selected.
 
 ## 3. For a YouTube sermon
 
