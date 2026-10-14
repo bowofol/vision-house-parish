@@ -215,7 +215,7 @@ function fixture({
 }
 
 for (const localMode of [true, false]) {
-  test('HTTP-served real controller initializes the actual form ' + (localMode ? 'ready for explicit local testing' : 'closed without the local switch'), async (t) => {
+  test('HTTP-served real controller ' + (localMode ? 'supports explicit local testing' : 'respects a closed API with the public frontend enabled'), async (t) => {
     let upstreamCalls = 0;
     const server = createDevServer({ env: {
       REGISTRATION_ENABLED: 'false', REGISTRATION_LOCAL_TEST_ENABLED: String(localMode)
@@ -227,40 +227,42 @@ for (const localMode of [true, false]) {
     for (const response of responses) assert.equal(response.status, 200);
     const [servedHtml, servedConfigSource, servedControllerSource] = await Promise.all(responses.map(response => response.text()));
     assert.equal(servedHtml, html);
-    const f = fixture({ servedConfigSource, servedControllerSource, responses: [confirmedResponse('LOCAL-QA-MOCK')] });
-    assert.equal(f.state, localMode ? 'ready' : 'unavailable');
-    assert.equal(f.element('registration-submit').disabled, !localMode);
-    assert.equal(f.element('registration-closed').hidden, localMode);
+    const f = fixture({ servedConfigSource, servedControllerSource, responses: [localMode ? confirmedResponse('LOCAL-QA-MOCK') :
+      apiResponse({ success: false, code: 'REGISTRATION_CLOSED', retrySafe: true, message: 'Registration is closed.' }, 503)] });
+    assert.equal(f.state, 'ready');
+    assert.equal(f.element('registration-submit').disabled, false);
+    assert.equal(f.element('registration-closed').hidden, true);
     assert.equal(f.element('registration-demo-notice'), null);
     assert.equal(f.calls.length, 0);
     f.fill();
     assert.equal(f.submit().defaultPrevented, true);
     await f.flush();
     assert.equal(f.state, localMode ? 'success' : 'unavailable');
-    assert.equal(f.calls.length, localMode ? 1 : 0);
+    assert.equal(f.calls.length, 1);
     if (localMode) {
       assert.equal(f.element('registration-receipt').textContent, 'Application reference: LOCAL-QA-MOCK');
       assert.doesNotMatch(f.message, /demo/i);
     } else {
-      assert.equal(f.uuidCount, 0);
-      assert.equal(f.abortControllerCount, 0);
+      assert.equal(f.uuidCount, 1);
+      assert.equal(f.abortControllerCount, 1);
+      assert.equal(f.element('registration-submit').disabled, true);
       assert.equal(f.element('registration-receipt'), null);
     }
     assert.equal(upstreamCalls, 0);
   });
 }
 
-test('public configuration is frozen, disables real registration and demo mode and contains no service credentials', () => {
+test('approved public configuration enables the form, disables demo mode and contains no service credentials', () => {
   const window = {};
   const context = vm.createContext({ window });
   vm.runInContext(configSource, context);
   const config = window.VisionHouseConfig.registration;
   assert.equal(Object.isFrozen(config), true);
-  assert.equal(config.registrationEnabled, false);
+  assert.equal(config.registrationEnabled, true);
   assert.equal(config.demoMode, false);
   assert.equal(config.apiPath, '/api/register');
   assert.deepEqual(Object.keys(config).sort(), ['apiPath', 'demoMode', 'registrationEnabled']);
-  assert.throws(() => vm.runInContext("'use strict'; window.VisionHouseConfig.registration.registrationEnabled = true;", context), /read only/);
+  assert.throws(() => vm.runInContext("'use strict'; window.VisionHouseConfig.registration.registrationEnabled = false;", context), /read only/);
   assert.doesNotMatch(JSON.stringify(config), /script\.google|secret|token|credential|sheet/i);
 });
 
@@ -467,8 +469,8 @@ test('unknown demo mode values fail closed rather than selecting the real regist
   }
 });
 
-test('default closed gate prevents manually enabled submission and preserves all details', () => {
-  const f = fixture({ usePublicConfig: true });
+test('an explicitly closed frontend gate prevents manually enabled submission and preserves all details', () => {
+  const f = fixture({ enabled: false });
   f.fill();
   f.element('registration-submit').disabled = false;
   assert.equal(f.submit().defaultPrevented, true);

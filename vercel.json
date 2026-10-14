@@ -7,7 +7,7 @@
   },
   "routes": [
     {
-      "src": "/(?:lib|scripts|tests|apps-script|\\.review|\\.git|\\.github)(?:/.*)?",
+      "src": "/(?:lib|scripts|tests|apps-script|cloudflare|\\.review|\\.git|\\.github)(?:/.*)?",
       "status": 404
     },
     {

@@ -1,6 +1,7 @@
 .review/
 tests/
 apps-script/
+cloudflare/
 .env*
 node_modules/
 REGISTRATION-TEST-REPORT.md

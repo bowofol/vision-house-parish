@@ -3,4 +3,8 @@
 !.env.example
 .vercel/
 node_modules/
+.wrangler/
+.dev.vars*
+cloudflare/registration/dist/
+/cloudflare/registration/wrangler.jsonc
 /REGISTRATION-TEST-REPORT.md

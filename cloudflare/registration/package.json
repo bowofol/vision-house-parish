@@ -1,0 +1,13 @@
+{
+  "name": "vision-house-registration-worker",
+  "private": true,
+  "scripts": {
+    "check": "wrangler deploy --dry-run --outdir dist",
+    "dev": "wrangler dev --local",
+    "test:local": "node --test tools/local-smoke.cjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.0",
+    "miniflare": "5.20261012.0-beta"
+  }
+}

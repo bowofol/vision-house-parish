@@ -47,6 +47,7 @@ async function listen(t, options, binding = '127.0.0.1') {
 }
 
 test('local-only override opens served gates without changing persistent/public configuration or sending upstream requests', async (t) => {
+  const originalConfig = await fs.readFile('js/registration-config.js', 'utf8');
   const env = { ...localTestEnv };
   let upstreamCalls = 0;
   const { server, base } = await listen(t, { env, fetchImpl: async () => {
@@ -73,7 +74,7 @@ test('local-only override opens served gates without changing persistent/public 
   assert.equal(upstreamCalls, 0);
   assert.equal(env.REGISTRATION_ENABLED, 'false');
   const persistentConfig = await fs.readFile('js/registration-config.js', 'utf8');
-  assert.match(persistentConfig, /registrationEnabled: false/);
+  assert.equal(persistentConfig, originalConfig);
   assert.match(persistentConfig, /demoMode: false/);
   assert.equal((await fetch(base + '/.env.local')).status, 404);
 });
@@ -102,13 +103,13 @@ test('local override refuses production, Vercel and an already open persistent g
   }
 });
 
-test('turning off the local switch restores closed real registration without enabling demo mode', async (t) => {
+test('turning off the local switch restores public frontend configuration while the API remains closed', async (t) => {
   let upstreamCalls = 0;
   const { base } = await listen(t, { env: { ...localTestEnv, REGISTRATION_LOCAL_TEST_ENABLED: 'false' },
     fetchImpl: async () => { upstreamCalls++; throw new Error('No registration submissions permitted while closed'); } });
   const config = await fetch(base + '/js/registration-config.js');
   const servedConfig = await config.text();
-  assert.match(servedConfig, /registrationEnabled: false/);
+  assert.equal(servedConfig, await fs.readFile('js/registration-config.js', 'utf8'));
   assert.match(servedConfig, /demoMode: false/);
   assert.equal(config.headers.get('x-visionhouse-local-registration'), 'disabled');
   const response = await fetch(base + '/api/register', { method: 'POST',
@@ -141,7 +142,10 @@ test('local server preserves public assets and hides server files and settings',
   for (const pathname of ['/', '/registration.html', '/css/registration.css', '/js/registration-config.js', '/assets/images/rccg-logo.png']) {
     assert.equal((await fetch(base + pathname)).status, 200, pathname);
   }
-  for (const pathname of ['/lib/registration-upstream.js', '/apps-script/Code.gs', '/.env.local', '/.env.example', '/api/register.js', '/tests/register.test.js', '/package.json', '/.review/phase1-check.mjs']) {
+  for (const pathname of ['/lib/registration-upstream.js', '/lib/registration-cloudflare.js', '/lib/registration-validation.js',
+    '/apps-script/Code.gs', '/cloudflare/registration/src/worker.mjs', '/cloudflare/registration/wrangler.jsonc',
+    '/cloudflare/registration/.dev.vars', '/cloudflare/registration/migrations/0001_registration.sql',
+    '/.env.local', '/.env.example', '/api/register.js', '/tests/register.test.js', '/package.json', '/.review/phase1-check.mjs']) {
     assert.equal((await fetch(base + pathname)).status, 404, pathname);
   }
   const range = await fetch(base + '/assets/images/rccg-logo.png', { headers: { Range: 'bytes=0-15' } });
