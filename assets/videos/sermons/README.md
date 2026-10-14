@@ -1,6 +1,6 @@
 # Add sermon videos in VS Code
 
-The Sermons page is a static video library. You add files and edit one JavaScript array; no dashboard, database or login is needed. No real sermon videos have been supplied yet, so the live data array is empty and the page says "Sermons will be available here soon."
+The Sermons page is a static video library. You add files and edit one JavaScript array; no dashboard, database or login is needed. When no complete entries are published, the page says "Sermons will be available here soon."
 
 ## 1. Add your files
 
@@ -23,7 +23,9 @@ Open **`js/data/sermons.js`**. Copy this blank template between the `[` and `]` 
   title: '',               // The actual sermon title.
   preacher: '',             // The actual preacher's name.
   preacherPhoto: '',        // assets/images/preachers/your-photo.jpg
-  date: '',                // Actual sermon date: YYYY-MM-DD.
+  date: '',                // Date used for display and sorting: YYYY-MM-DD.
+  dateType: 'sermon',       // Use 'publication' for the video's upload date.
+  dateApproximate: false,   // Use true only for an estimated publication date.
   thumbnail: '',           // assets/images/sermon-thumbnails/your-thumbnail.jpg
   description: '',         // A short description of this sermon.
   videoSrc: '',            // assets/videos/sermons/your-sermon.mp4
@@ -34,7 +36,9 @@ Open **`js/data/sermons.js`**. Copy this blank template between the `[` and `]` 
 }
 ```
 
-Required: a unique `id`, `title`, `preacher`, real `date`, `thumbnail`, `description`, and **one** video source. Surround text, dates and file paths with quotes. The date is the day the message was preached, not an invented publication date.
+Required: a unique `id`, `title`, `preacher`, `date`, `thumbnail`, `description`, and **one** video source. Surround text, dates and file paths with quotes. By default, the date is the verified day the message was preached. If only the upload date is known, set `dateType: 'publication'`; cards and the player will explicitly label it "Published". For a church-approved provisional upload estimate, also set `dateApproximate: true` to display "Published around". Never present an estimated upload date as a verified preaching date. Entries without these optional fields keep their existing date display.
+
+The first entry, "Go Deeper With God", uses **2026-10-11 as a provisional publication date**, inferred from a relative YouTube upload age supplied by the church. Neither the exact upload date nor the preaching date has been verified. Confirm the date before publishing if an exact date is required, then update the date metadata as appropriate.
 
 To add another sermon, place a comma after the previous object and paste another object inside the same array. Save the file. Entries are sorted by date, newest first. The newest published entry is featured unless you set `featured: true` on another entry. If multiple entries are marked featured, the newest of those is selected.
 

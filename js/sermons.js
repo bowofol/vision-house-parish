@@ -56,7 +56,13 @@
   // Keep the exact static empty state when no real, complete videos are published.
   if (!records.length) return;
   const dateFormat = new Intl.DateTimeFormat('en-NG', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
-  const dateText = record => dateFormat.format(new Date(`${record.date}T00:00:00Z`));
+  const dateText = record => {
+    const formatted = dateFormat.format(new Date(`${record.date}T00:00:00Z`));
+    if (record.dateType === 'publication') {
+      return `${record.dateApproximate === true ? 'Published around' : 'Published'} ${formatted}`;
+    }
+    return formatted;
+  };
   const normalize = value => value.toLocaleLowerCase('en-NG').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const create = (tag, className, text) => {
     const node = document.createElement(tag);
