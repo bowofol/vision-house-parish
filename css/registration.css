@@ -29,6 +29,9 @@
 .registration-actions .button:disabled { cursor: not-allowed; color: var(--white); background: var(--muted); opacity: 1; transform: none; box-shadow: none; }
 .registration-state { margin-top: 12px; }
 .registration-state[data-state="failure"] { color: #a32d32; }
+.registration-state[data-state="demo-failure"] { color: #a32d32; }
+.registration-state[data-state="demo-success"] { color: var(--forest); font-weight: 600; }
+#registration-demo-reset { margin-top: 16px; }
 @media (max-width: 1023px) {
   .registration-layout { grid-template-columns: minmax(0, .65fr) minmax(0, 1.35fr); gap: 32px; }
   .registration-form .form-grid { grid-template-columns: 1fr; gap: 0; }

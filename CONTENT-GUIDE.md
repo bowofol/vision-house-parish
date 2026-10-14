@@ -1,5 +1,7 @@
 # Vision House content guide
 
+For the new Sermons, Announcements, Classes, Ministries and Giving pages, see [PHASE1-CONTENT-GUIDE.md](PHASE1-CONTENT-GUIDE.md). It documents manual content publishing and the Phase 2 registration handoff. Existing homepage content and media guidance remain below.
+
 The site is static HTML, CSS and JavaScript. Open index.html or serve the project root. No build step or JavaScript dependencies are required.
 
 ## Approved church details
@@ -7,14 +9,14 @@ The site is static HTML, CSS and JavaScript. Open index.html or serve the projec
 Update these details in index.html only after a confirmed change:
 
 - RCCG Vision House Area — Home of Pace Setters.
-- Pastor: Pst. Dele Oyediran. His photograph remains the supplied assets/images/pastor-dele.jpg.
+- Pastor: Pst. Dele Oyediran. His approved photograph is assets/images/pastor-new.jpg, copied unchanged from img/New folder/WhatsApp Image 2026-10-07 at 9.45.10 PM.jpeg. Preserve its natural appearance and watermark.
 - Address: Behind Rofit School, Nurses Estate, City College, Karu.
 - Display number: 0803 701 1088.
 - Call link: tel:+2348037011088.
 - WhatsApp: https://wa.me/2348037011088.
 - Tuesday: Digging Deep, 6:00 PM–7:00 PM.
 - Thursday: Faith Clinic, 6:00 PM–7:00 PM.
-- First Saturday of each month: Hour of Triumph, 7:00 AM–8:00 AM.
+- First Saturday of each month: Hour of Triumph, 7:00 AM–8:30 AM.
 - Sunday: Family Worship, 9:00 AM–11:00 AM.
 
 Keep the vision and mission wording approved in the current HTML. No history, staff biography, testimonials, statistics, unconfirmed programmes, email or social accounts have been added.
@@ -49,7 +51,7 @@ Forest provides strong contrast for small white button text. Rich green is reser
 
 ## Photography
 
-All visible photos come from the supplied church files. Preserve the originals. The website uses responsive WebP copies in assets/images/optimized.
+All visible photos come from the supplied church files. Preserve the originals. The website uses responsive WebP copies in assets/images/optimized, except for the pastor portrait, which uses the approved original JPEG at assets/images/pastor-new.jpg.
 
 To regenerate them, run: python scripts/optimize_images.py
 

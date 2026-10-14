@@ -56,7 +56,9 @@ test('local-only override opens served gates without changing persistent/public 
   for (const host of ['127.0.0.1']) {
     const authority = host + ':' + server.address().port;
     const response = await requestWithHost(base + '/js/registration-config.js', { headers: { Host: authority } });
-    assert.match(await response.text(), /registrationEnabled: true/);
+    const servedConfig = await response.text();
+    assert.match(servedConfig, /registrationEnabled: true/);
+    assert.match(servedConfig, /demoMode: false/);
     assert.equal(response.headers.get('cache-control'), 'no-store');
     assert.equal(response.headers.get('x-visionhouse-local-registration'), 'enabled');
     const invalid = await requestWithHost(base + '/api/register', {
@@ -70,7 +72,9 @@ test('local-only override opens served gates without changing persistent/public 
   }
   assert.equal(upstreamCalls, 0);
   assert.equal(env.REGISTRATION_ENABLED, 'false');
-  assert.match(await fs.readFile('js/registration-config.js', 'utf8'), /registrationEnabled: false/);
+  const persistentConfig = await fs.readFile('js/registration-config.js', 'utf8');
+  assert.match(persistentConfig, /registrationEnabled: false/);
+  assert.match(persistentConfig, /demoMode: false/);
   assert.equal((await fetch(base + '/.env.local')).status, 404);
 });
 
@@ -98,14 +102,22 @@ test('local override refuses production, Vercel and an already open persistent g
   }
 });
 
-test('turning off the local switch restores closed served frontend and API', async (t) => {
-  const { base } = await listen(t, { env: { ...localTestEnv, REGISTRATION_LOCAL_TEST_ENABLED: 'false' } });
+test('turning off the local switch restores closed real registration without enabling demo mode', async (t) => {
+  let upstreamCalls = 0;
+  const { base } = await listen(t, { env: { ...localTestEnv, REGISTRATION_LOCAL_TEST_ENABLED: 'false' },
+    fetchImpl: async () => { upstreamCalls++; throw new Error('No registration submissions permitted while closed'); } });
   const config = await fetch(base + '/js/registration-config.js');
-  assert.match(await config.text(), /registrationEnabled: false/);
+  const servedConfig = await config.text();
+  assert.match(servedConfig, /registrationEnabled: false/);
+  assert.match(servedConfig, /demoMode: false/);
   assert.equal(config.headers.get('x-visionhouse-local-registration'), 'disabled');
-  const response = await fetch(base + '/api/register', { method: 'POST', body: '{}' });
+  const response = await fetch(base + '/api/register', { method: 'POST',
+    headers: { 'Content-Type': 'application/json', Origin: base, 'Idempotency-Key': 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa' },
+    body: JSON.stringify({ fullName: 'Synthetic Test Applicant', email: '', phone: '+2348030000000',
+      selectedClass: 'Workers-in-Training', preferredContact: 'Phone', website: '' }) });
   assert.equal(response.status, 503);
   assert.equal((await response.json()).code, 'REGISTRATION_CLOSED');
+  assert.equal(upstreamCalls, 0);
 });
 
 test('a second dev server reports an occupied port clearly and leaves the existing listener intact', async (t) => {
@@ -122,7 +134,7 @@ test('a second dev server reports an occupied port clearly and leaves the existi
 });
 
 test('local server preserves public assets and hides server files and settings', async (t) => {
-  const server = createDevServer();
+  const server = createDevServer({ env: { REGISTRATION_ENABLED: 'false', REGISTRATION_LOCAL_TEST_ENABLED: 'false' } });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   t.after(() => new Promise(resolve => server.close(resolve)));
   const base = 'http://127.0.0.1:' + server.address().port;

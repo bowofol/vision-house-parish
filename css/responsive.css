@@ -86,7 +86,6 @@
   .vision-layout { grid-template-columns: .75fr 1.25fr; gap: 54px; }
   .pastor-layout { gap: 50px; }
   .pastor-photo { padding: 18px 18px 0; }
-  .pastor-photo img { height: 410px; }
   .pastor-name h3 { font-size: 24px; }
   .life-section { padding-top: 8px; }
   .life-story h3 { font-size: 24px; }
@@ -168,7 +167,6 @@
   .vision-statement h3 { font-size: 29px; }
   .vision-statement p { font-size: 14px; }
   .pastor-photo { max-width: 430px; width: 100%; margin-inline: auto; padding: 20px 20px 0; }
-  .pastor-photo img { height: auto; aspect-ratio: 3/4; object-fit: contain; }
   .pastor-copy h2 { margin-bottom: 26px; }
   .pastor-name { padding-bottom: 22px; margin-bottom: 22px; }
   .life-section { padding-top: 8px; }

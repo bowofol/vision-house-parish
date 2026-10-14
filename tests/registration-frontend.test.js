@@ -11,9 +11,10 @@ const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'registration.html'), 'utf8');
 const configSource = fs.readFileSync(path.join(root, 'js/registration-config.js'), 'utf8');
 const controllerSource = fs.readFileSync(path.join(root, 'js/registration.js'), 'utf8');
+const demoControllerSource = fs.readFileSync(path.join(root, 'js/registration-demo.js'), 'utf8');
 const fieldIds = ['registration-name', 'registration-email', 'registration-phone', 'registration-class', 'registration-contact'];
 
-// This fixture implements only DOM operations used by the real controller.
+// This fixture implements only DOM operations used by the registration controllers.
 // Control names, options and defaults come from the actual HTML, not copied
 // registration logic. Responses, timers and transport are controlled externally.
 class Element {
@@ -87,7 +88,7 @@ const attributesOf = (text) => Object.fromEntries([...text.matchAll(/([\w-]+)(?:
 
 function createDocument() {
   const document = {
-    elements: new Map(), controls: [],
+    elements: new Map(), controls: [], cookieAccessCount: 0,
     getElementById(id) { return this.elements.get(id) || null; },
     createElement(tag) { return new Element(this, tag); },
     querySelector(selector) {
@@ -96,7 +97,7 @@ function createDocument() {
       return null;
     }
   };
-  for (const match of html.matchAll(/<([a-z]+)\b([^>]*\bid="[^"]+"[^>]*)>/g)) {
+  for (const match of html.matchAll(/<([a-z][a-z0-9]*)\b([^>]*\bid="[^"]+"[^>]*)>/g)) {
     const element = new Element(document, match[1], attributesOf(match[2]));
     if (['INPUT', 'SELECT'].includes(element.tagName)) document.controls.push(element);
   }
@@ -107,7 +108,7 @@ function createDocument() {
     select.value = select.defaultValue = select.options[0].value;
   }
   document.badge = document.createElement('span');
-  document.badge.textContent = 'Registration opening soon';
+  document.badge.textContent = /class="status-badge">([^<]+)<\/span>/.exec(html)[1];
   document.privacy = document.createElement('p');
   document.privacy.textContent = /id="registration-privacy"[\s\S]*?<p>([^<]+)<\/p>/.exec(html)[1];
   const notice = document.getElementById('registration-closed');
@@ -115,8 +116,8 @@ function createDocument() {
   const actions = document.createElement('div');
   actions.append(document.getElementById('registration-submit'), document.getElementById('registration-status'));
   Object.defineProperty(document, 'cookie', {
-    get() { throw new Error('Unexpected cookie access'); },
-    set() { throw new Error('Unexpected cookie write'); }
+    get() { document.cookieAccessCount++; throw new Error('Unexpected cookie access'); },
+    set() { document.cookieAccessCount++; throw new Error('Unexpected cookie write'); }
   });
   return document;
 }
@@ -132,16 +133,24 @@ const safeFailure = (code = 'INVALID_FIELDS', extras = {}) => apiResponse({
   success: false, code, retrySafe: true, message: 'Please review your registration.', ...extras
 }, code === 'RATE_LIMITED' ? 429 : 400);
 
-function fixture({ enabled = true, apiPath = '/api/register', responses = [], servedConfigSource, servedControllerSource } = {}) {
+function fixture({
+  enabled = true, demoMode = false, apiPath = '/api/register', responses = [],
+  servedConfigSource, servedControllerSource, servedDemoControllerSource,
+  usePublicConfig = false, loadDemoController = false, configureWindow
+} = {}) {
   const document = createDocument();
   const calls = [];
   const timers = new Map();
   let timerId = 0;
   let uuidCount = 0;
+  let abortControllerCount = 0;
+  let storageAccessCount = 0;
   const forbidden = () => { throw new Error('Unexpected applicant logging or storage'); };
   const window = {
     crypto: { randomUUID: () => `aabbccdd-4455-4677-8899-${String(++uuidCount).padStart(12, '0')}` },
-    AbortController,
+    AbortController: class extends AbortController {
+      constructor() { super(); abortControllerCount++; }
+    },
     async fetch(url, options) {
       calls.push({ url, options });
       const response = responses.shift();
@@ -155,14 +164,26 @@ function fixture({ enabled = true, apiPath = '/api/register', responses = [], se
     },
     clearTimeout(id) { timers.delete(id); }
   };
-  for (const name of ['localStorage', 'sessionStorage']) {
-    Object.defineProperty(window, name, { get: forbidden });
+  for (const name of ['localStorage', 'sessionStorage', 'indexedDB']) {
+    Object.defineProperty(window, name, {
+      get() { storageAccessCount++; return forbidden(); },
+      set() { storageAccessCount++; return forbidden(); }
+    });
   }
+  configureWindow?.(window);
   const context = vm.createContext({ window, document, console: { log: forbidden, warn: forbidden, error: forbidden } });
   vm.runInContext(servedConfigSource ?? configSource, context);
-  if (servedConfigSource === undefined && (enabled || apiPath !== '/api/register')) {
-    window.VisionHouseConfig.registration = Object.freeze({ registrationEnabled: enabled, apiPath });
+  if (servedConfigSource === undefined && !usePublicConfig) {
+    window.VisionHouseConfig.registration = Object.freeze({ registrationEnabled: enabled, demoMode, apiPath });
   }
+  // The production HTML does not include the retired demo notice/controller.
+  // Explicit demo regression tests supply their own notice in this isolated DOM.
+  if (loadDemoController && window.VisionHouseConfig.registration.demoMode === true &&
+      !document.getElementById('registration-demo-notice')) {
+    const notice = document.createElement('div');
+    notice.id = 'registration-demo-notice';
+  }
+  if (loadDemoController) vm.runInContext(servedDemoControllerSource ?? demoControllerSource, context);
   vm.runInContext(servedControllerSource ?? controllerSource, context);
   const element = (id) => document.getElementById(id);
   const form = element('class-registration-form');
@@ -178,6 +199,10 @@ function fixture({ enabled = true, apiPath = '/api/register', responses = [], se
   };
   return {
     document, window, context, calls, timers, controls, element, flush,
+    get uuidCount() { return uuidCount; },
+    get abortControllerCount() { return abortControllerCount; },
+    get storageAccessCount() { return storageAccessCount + document.cookieAccessCount; },
+    get timerCount() { return timerId; },
     get state() { return element('registration-status').dataset.state; },
     get message() { return element('registration-status').textContent; },
     submit() { return form.fire('submit'); },
@@ -190,7 +215,7 @@ function fixture({ enabled = true, apiPath = '/api/register', responses = [], se
 }
 
 for (const localMode of [true, false]) {
-  test('HTTP-served config and controller initialize the actual form ' + (localMode ? 'ready in local mode' : 'closed without local mode'), async (t) => {
+  test('HTTP-served real controller initializes the actual form ' + (localMode ? 'ready for explicit local testing' : 'closed without the local switch'), async (t) => {
     let upstreamCalls = 0;
     const server = createDevServer({ env: {
       REGISTRATION_ENABLED: 'false', REGISTRATION_LOCAL_TEST_ENABLED: String(localMode)
@@ -202,24 +227,39 @@ for (const localMode of [true, false]) {
     for (const response of responses) assert.equal(response.status, 200);
     const [servedHtml, servedConfigSource, servedControllerSource] = await Promise.all(responses.map(response => response.text()));
     assert.equal(servedHtml, html);
-    const f = fixture({ servedConfigSource, servedControllerSource });
+    const f = fixture({ servedConfigSource, servedControllerSource, responses: [confirmedResponse('LOCAL-QA-MOCK')] });
     assert.equal(f.state, localMode ? 'ready' : 'unavailable');
     assert.equal(f.element('registration-submit').disabled, !localMode);
     assert.equal(f.element('registration-closed').hidden, localMode);
+    assert.equal(f.element('registration-demo-notice'), null);
     assert.equal(f.calls.length, 0);
+    f.fill();
+    assert.equal(f.submit().defaultPrevented, true);
+    await f.flush();
+    assert.equal(f.state, localMode ? 'success' : 'unavailable');
+    assert.equal(f.calls.length, localMode ? 1 : 0);
+    if (localMode) {
+      assert.equal(f.element('registration-receipt').textContent, 'Application reference: LOCAL-QA-MOCK');
+      assert.doesNotMatch(f.message, /demo/i);
+    } else {
+      assert.equal(f.uuidCount, 0);
+      assert.equal(f.abortControllerCount, 0);
+      assert.equal(f.element('registration-receipt'), null);
+    }
     assert.equal(upstreamCalls, 0);
   });
 }
 
-test('public configuration is frozen, closed, and contains only a flag and relative API path', () => {
+test('public configuration is frozen, disables real registration and demo mode and contains no service credentials', () => {
   const window = {};
   const context = vm.createContext({ window });
   vm.runInContext(configSource, context);
   const config = window.VisionHouseConfig.registration;
   assert.equal(Object.isFrozen(config), true);
   assert.equal(config.registrationEnabled, false);
+  assert.equal(config.demoMode, false);
   assert.equal(config.apiPath, '/api/register');
-  assert.deepEqual(Object.keys(config).sort(), ['apiPath', 'registrationEnabled']);
+  assert.deepEqual(Object.keys(config).sort(), ['apiPath', 'demoMode', 'registrationEnabled']);
   assert.throws(() => vm.runInContext("'use strict'; window.VisionHouseConfig.registration.registrationEnabled = true;", context), /read only/);
   assert.doesNotMatch(JSON.stringify(config), /script\.google|secret|token|credential|sheet/i);
 });
@@ -232,12 +272,203 @@ test('actual HTML has exactly six names, a hidden honeypot, approved values and 
   assert.deepEqual(f.controls.selectedClass.options.map((option) => option.value), ['', 'Workers-in-Training', "Believers' Class", 'Baptismal Class']);
   assert.deepEqual(f.controls.preferredContact.options.map((option) => option.value), ['Phone', 'WhatsApp', 'Email']);
   const configIndex = html.indexOf('src="js/registration-config.js" defer');
+  const demoIndex = html.indexOf('src="js/registration-demo.js" defer');
   const controllerIndex = html.indexOf('src="js/registration.js" defer');
-  assert.ok(configIndex >= 0 && controllerIndex >= 0 && configIndex < controllerIndex);
+  assert.ok(configIndex >= 0 && controllerIndex > configIndex);
+  assert.equal(demoIndex, -1, 'the registration page cannot bootstrap the demo controller');
+  assert.match(html, /http-equiv="Content-Security-Policy"[^>]*content="[^"]*form-action 'none'/);
+  assert.doesNotMatch(html, /id="registration-demo-notice"|Class Registration Demo|Demo Mode/);
+  assert.match(html, /id="registration-submit"[^>]*disabled/);
+});
+
+const DEMO_SUCCESS = 'Demo Registration Successful — No application has been submitted.';
+
+function demoFixture(options = {}) {
+  return fixture({ demoMode: true, enabled: false, loadDemoController: true, ...options });
+}
+
+function assertNoDemoTransport(f) {
+  assert.equal(f.calls.length, 0, 'the demo cannot make a registration request');
+  assert.equal(f.uuidCount, 0, 'the demo cannot create a real submission identifier');
+  assert.equal(f.abortControllerCount, 0, 'the demo cannot prepare an abortable request');
+  assert.equal(f.storageAccessCount, 0, 'the demo cannot read or persist details in browser storage');
+  assert.equal(f.document.getElementById('registration-receipt'), null, 'the demo cannot issue an application receipt');
+  assert.equal(f.timers.size, 0, 'the demo cannot leave a request or retry timer');
+}
+
+test('an explicitly loaded isolated demo validates locally and shows the exact unsent success message', () => {
+  const f = demoFixture();
+  assert.equal(f.state, 'demo-ready');
+  assert.equal(f.element('registration-submit').disabled, false);
+  assert.match(f.element('registration-submit').textContent, /demo/i);
+  assert.equal(f.element('registration-demo-notice').hidden, false);
+  assert.match(f.document.privacy.textContent, /browser|demo/i);
+  f.fill();
+  assert.equal(f.submit().defaultPrevented, true);
+  assert.equal(f.state, 'demo-success');
+  assert.equal(f.message, DEMO_SUCCESS);
+  assert.equal(f.controls.fullName.value, 'Synthetic Applicant');
+  assert.equal(f.element('class-registration-form').getAttribute('aria-busy'), 'false');
+  assert.ok(fieldIds.every(id => f.element(id).disabled));
+  assert.equal(f.element('registration-submit').disabled, true);
+  assert.equal(f.timerCount, 0, 'demo submission cannot schedule a request timer');
+  assertNoDemoTransport(f);
+});
+
+test('demo accepts approved class/contact choices and requires email only for Email contact', () => {
+  for (const selectedClass of ['Workers-in-Training', "Believers' Class", 'Baptismal Class']) {
+    for (const preferredContact of ['Phone', 'WhatsApp', 'Email']) {
+      const f = demoFixture();
+      f.fill({ selectedClass, preferredContact, email: preferredContact === 'Email' ? 'demo@example.invalid' : '' });
+      f.controls.preferredContact.fire('change');
+      assert.equal(f.controls.email.required, preferredContact === 'Email');
+      f.submit();
+      assert.equal(f.message, DEMO_SUCCESS);
+      assert.equal(f.timerCount, 0);
+      assertNoDemoTransport(f);
+    }
+  }
+});
+
+for (const [description, changes, fieldName] of [
+  ['unselected class', { selectedClass: '' }, 'selectedClass'],
+  ['unapproved class', { selectedClass: 'Other Class' }, 'selectedClass'],
+  ['missing name', { fullName: '' }, 'fullName'],
+  ['short name', { fullName: 'A' }, 'fullName'],
+  ['overlong name', { fullName: 'A'.repeat(101) }, 'fullName'],
+  ['invalid email', { email: 'invalid-email' }, 'email'],
+  ['missing preferred email', { email: '', preferredContact: 'Email' }, 'email'],
+  ['missing phone', { phone: '' }, 'phone'],
+  ['invalid phone', { phone: 'letters' }, 'phone'],
+  ['short phone', { phone: '123456' }, 'phone'],
+  ['overlong phone formatting', { phone: '+234' + ' '.repeat(30) + '8030000000' }, 'phone'],
+  ['unapproved contact', { preferredContact: 'SMS' }, 'preferredContact']
+]) {
+  test(`demo rejects ${description} with field feedback and no request preparation`, () => {
+    const f = demoFixture();
+    f.fill(changes);
+    assert.equal(f.submit().defaultPrevented, true);
+    assert.equal(f.state, 'demo-failure');
+    assert.notEqual(f.message, DEMO_SUCCESS);
+    assert.equal(f.controls[fieldName].getAttribute('aria-invalid'), 'true');
+    assert.ok(f.element(f.controls[fieldName].id + '-error').textContent);
+    assert.equal(f.document.activeElement, f.controls[fieldName]);
+    assert.equal(f.element('registration-submit').disabled, false);
+    assert.equal(f.controls.fullName.value, changes.fullName ?? 'Synthetic Applicant');
+    assert.equal(f.timerCount, 0);
+    assertNoDemoTransport(f);
+  });
+}
+
+test('demo field errors clear after correction and valid details still remain unsent', () => {
+  const f = demoFixture();
+  f.fill({ fullName: '', email: '', phone: '', selectedClass: '', preferredContact: 'Email' });
+  f.submit();
+  for (const key of ['selectedClass', 'fullName', 'email', 'phone']) {
+    assert.equal(f.controls[key].getAttribute('aria-invalid'), 'true');
+  }
+  assert.equal(f.document.activeElement, f.controls.selectedClass);
+  f.fill({ email: 'demo@example.invalid', preferredContact: 'Email' });
+  for (const control of Object.values(f.controls)) control.fire('input');
+  f.submit();
+  assert.equal(f.message, DEMO_SUCCESS);
+  assert.ok(fieldIds.every(id => f.element(id).getAttribute('aria-invalid') === 'false'));
+  assert.equal(f.timerCount, 0);
+  assertNoDemoTransport(f);
+});
+
+test('a populated demo honeypot cannot produce a confirmation or send any details', () => {
+  for (const website of ['automated-value', ' ']) {
+    const f = demoFixture();
+    f.fill({ website });
+    assert.equal(f.submit().defaultPrevented, true);
+    assert.equal(f.state, 'demo-failure');
+    assert.notEqual(f.message, DEMO_SUCCESS);
+    assert.equal(f.timerCount, 0);
+    assertNoDemoTransport(f);
+  }
+});
+
+test('repeat demo clicks remain local and explicit reset starts another demo without a receipt', async () => {
+  const f = demoFixture();
+  f.fill();
+  f.submit();
+  f.element('registration-submit').disabled = false;
+  f.submit();
+  assert.equal(f.message, DEMO_SUCCESS);
+  assert.equal(f.element('registration-submit').disabled, true);
+  assert.equal(f.timerCount, 0);
+  const resetButton = f.element('registration-demo-reset');
+  assert.ok(resetButton);
+  assert.equal(resetButton.type, 'reset');
+  assert.equal(resetButton.textContent, 'Start another demo');
+  assert.equal(f.element('registration-status').parentElement.children.filter(element => element.id === 'registration-demo-reset').length, 1);
+  assertNoDemoTransport(f);
+  f.controls.website.value = 'previous-demo-value';
+  assert.equal(f.reset().defaultPrevented, false);
+  assert.ok([...f.timers.values()].every(timer => timer.delay === 0), 'reset may only defer presentation until native form reset finishes');
+  await f.flush();
+  assert.equal(f.state, 'demo-ready');
+  assert.equal(f.element('registration-demo-reset'), null);
+  assert.equal(f.controls.fullName.value, '');
+  assert.equal(f.controls.website.value, '');
+  assert.equal(f.controls.preferredContact.value, 'Phone');
+  assert.ok(fieldIds.every(id => !f.element(id).disabled && f.element(id).getAttribute('aria-invalid') === null));
+  const resetTimerCount = f.timerCount;
+  f.fill({ fullName: 'Another Synthetic Applicant' });
+  f.submit();
+  assert.equal(f.message, DEMO_SUCCESS);
+  assert.equal(f.timerCount, resetTimerCount, 'another demo submission cannot create request timers');
+  assertNoDemoTransport(f);
+});
+
+test('demo remains usable without fetch, crypto or AbortController', () => {
+  const f = demoFixture({ configureWindow(window) {
+    delete window.fetch;
+    delete window.crypto;
+    delete window.AbortController;
+  } });
+  f.fill();
+  f.submit();
+  assert.equal(f.message, DEMO_SUCCESS);
+  assert.equal(f.timerCount, 0);
+  assertNoDemoTransport(f);
+});
+
+test('demo mode prevents real requests even when the real frontend flag and a foreign endpoint are configured', () => {
+  for (const apiPath of ['/api/register', 'https://example.invalid/register']) {
+    const f = demoFixture({ enabled: true, apiPath, responses: [confirmedResponse('NEVER-REQUESTED')] });
+    f.fill();
+    f.submit();
+    assert.equal(f.message, DEMO_SUCCESS);
+    assert.equal(f.timerCount, 0);
+    assertNoDemoTransport(f);
+  }
+});
+
+test('the real controller blocks native submission when the demo controller is absent', () => {
+  const f = fixture({ demoMode: true, enabled: true, loadDemoController: false });
+  f.fill();
+  f.element('registration-submit').disabled = false;
+  assert.equal(f.submit().defaultPrevented, true);
+  assert.equal(f.timerCount, 0);
+  assertNoDemoTransport(f);
+});
+
+test('unknown demo mode values fail closed rather than selecting the real registration adapter', () => {
+  for (const demoMode of [undefined, null, 'true', 'false', 0, 1]) {
+    const servedConfigSource = "window.VisionHouseConfig = { registration: Object.freeze({ registrationEnabled: true, apiPath: '/api/register', demoMode: " + String(JSON.stringify(demoMode)) + ' }) };';
+    const f = fixture({ servedConfigSource, loadDemoController: true });
+    f.fill();
+    f.element('registration-submit').disabled = false;
+    assert.equal(f.submit().defaultPrevented, true);
+    assert.equal(f.timerCount, 0);
+    assertNoDemoTransport(f);
+  }
 });
 
 test('default closed gate prevents manually enabled submission and preserves all details', () => {
-  const f = fixture({ enabled: false });
+  const f = fixture({ usePublicConfig: true });
   f.fill();
   f.element('registration-submit').disabled = false;
   assert.equal(f.submit().defaultPrevented, true);

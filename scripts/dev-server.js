@@ -12,7 +12,7 @@ const mimeTypes = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.avif': 'image/avif',
-  '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.m4a': 'audio/mp4',
+  '.mp4': 'video/mp4', '.webm': 'video/webm', '.vtt': 'text/vtt; charset=utf-8', '.mp3': 'audio/mpeg', '.m4a': 'audio/mp4',
   '.ogg': 'audio/ogg', '.oga': 'audio/ogg', '.wav': 'audio/wav', '.aac': 'audio/aac', '.flac': 'audio/flac', '.opus': 'audio/ogg'
 };
 
@@ -72,7 +72,7 @@ function createDevServer({ handler, env = process.env, fetchImpl = globalThis.fe
         // Explicit local status, independent of static file formatting. Never
         // edit the deployed config or send server environment values to Chrome.
         data = Buffer.from("(() => { 'use strict'; window.VisionHouseConfig = window.VisionHouseConfig || {}; " +
-          "window.VisionHouseConfig.registration = Object.freeze({ registrationEnabled: true, apiPath: '/api/register' }); })();\n");
+          "window.VisionHouseConfig.registration = Object.freeze({ demoMode: false, registrationEnabled: true, apiPath: '/api/register' }); })();\n");
       }
       const headers = { 'Content-Type': mimeTypes[extension], 'Accept-Ranges': 'bytes', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
       if (relative === 'js/registration-config.js') {

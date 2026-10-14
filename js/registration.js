@@ -4,6 +4,14 @@
   const form = document.getElementById('class-registration-form');
   if (!form) return;
 
+  const config = window.VisionHouseConfig?.registration;
+  // Only an explicit non-demo configuration can initialize real registration.
+  // Prevent native form navigation when demo configuration/scripts are absent.
+  if (config?.demoMode !== false) {
+    form.addEventListener('submit', (event) => event.preventDefault());
+    return;
+  }
+
   const fields = {
     selectedClass: document.getElementById('registration-class'),
     fullName: document.getElementById('registration-name'),
@@ -18,12 +26,11 @@
   const closedNotice = document.getElementById('registration-closed');
   const badge = document.querySelector('.registration-panel-heading .status-badge');
   const privacyCopy = document.querySelector('#registration-privacy p');
-  const originalBadge = badge.textContent;
-  const originalPrivacy = privacyCopy.textContent;
+  const originalBadge = 'Registration opening soon';
+  const originalPrivacy = 'This website does not store or send any information entered in this form while registration is closed. Please wait until registration opens before sharing your details.';
   const touched = new Set();
   const classOptions = new Set(['Workers-in-Training', "Believers' Class", 'Baptismal Class']);
   const contactOptions = new Set(['Phone', 'WhatsApp', 'Email']);
-  const config = window.VisionHouseConfig?.registration;
   const requestTimeout = 20000;
   const safeApplicationId = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
   const safeSubmissionId = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
@@ -46,7 +53,7 @@
   // Only this relative same-origin API is allowed. Both the public flag and
   // the server's private registration gate must be open after verification.
   const submissionAdapter = Object.freeze({
-    available: config?.registrationEnabled === true && config.apiPath === '/api/register' &&
+    available: config?.demoMode === false && config.registrationEnabled === true && config.apiPath === '/api/register' &&
       typeof window.crypto?.randomUUID === 'function' && typeof window.fetch === 'function' &&
       typeof window.AbortController === 'function',
     async submit(application, idempotencyKey, signal) {
@@ -109,6 +116,9 @@
 
   const updatePresentation = () => {
     const open = submissionAdapter.available && !serverClosed;
+    const demoNotice = document.getElementById('registration-demo-notice');
+    if (demoNotice) demoNotice.hidden = true;
+    document.getElementById('registration-form-title').textContent = 'Class registration';
     closedNotice.hidden = open;
     badge.textContent = open ? 'Class registration' : originalBadge;
     privacyCopy.textContent = submissionAdapter.available

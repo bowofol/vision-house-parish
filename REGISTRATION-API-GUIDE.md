@@ -1,14 +1,14 @@
 # Registration API and Google Sheets setup
 
-The registration form uses the same-origin Vercel `/api/register` function with Google Apps Script and the existing private Google Sheet. No database package or paid storage service is required.
+The real registration system uses the same-origin Vercel `/api/register` function with Google Apps Script and the existing private Google Sheet. No database package or paid storage service is required. Demo Mode is disabled; real submissions are available only through the [loopback testing override](REGISTRATION-LOCAL-TEST.md).
 
-**This is a closed registration release.** Keep `registrationEnabled: false` in `js/registration-config.js` and `REGISTRATION_ENABLED=false` in Vercel. The source and isolated tests do not establish that the current production deployment accepts or saves applications. Preparation or staging of these files does not authorize a commit, Git push, deployment, live test request, or public launch. Private live test records and local QA tooling are excluded from the release.
+**Public registration remains closed.** Keep `demoMode: false` and `registrationEnabled: false` in `js/registration-config.js` and `REGISTRATION_ENABLED=false` in Vercel. The ignored local setting `REGISTRATION_LOCAL_TEST_ENABLED=true` enables only the loopback dev server for your manual test; Vercel ignores it. The source and isolated tests do not establish that the current production deployment accepts or saves applications. Local testing does not authorize a commit, Git push, deployment or public launch. Private live test records and local QA tooling are excluded from the release.
 
 ## Registration files
 
 - `api/register.js`: POST-only validation, private authentication and API responses.
 - `lib/registration-upstream.js`: one authenticated POST, bounded HTTPS redirects, deadline and verified receipt.
-- `registration.html`, `css/features.css`, `css/registration.css`, `js/navigation.js`, `js/registration-config.js`, `js/registration.js`: form, navigation, closed public gate, submission-ID reuse and matching receipt verification. Existing tracked shared CSS, `js/main.js`, logo and social image remain dependencies.
+- `registration.html`, `css/features.css`, `css/registration.css`, `js/navigation.js`, `js/registration-config.js`, `js/registration.js`: form, navigation, closed public frontend gate, submission-ID reuse and matching receipt verification. Existing tracked shared CSS, `js/main.js`, logo and social image remain dependencies. The inactive `js/registration-demo.js` is retained separately and is not loaded by the page.
 - `apps-script/Code.gs`: registration script to compare with the existing deployed Google project before any separately authorized update.
 - `scripts/dev-server.js`, `package.json`: dependency-free Node.js 22 local server and test commands.
 - `.env.example`: private configuration template without credentials.
@@ -27,7 +27,7 @@ Redis is not used. The registration bridge requires only the private variables b
 | `APPS_SCRIPT_EXEC_URL` | Actual deployed `https://script.google.com/macros/s/.../exec` URL, without query, credentials or fragment. |
 | `APPS_SCRIPT_SHARED_SECRET` | Reuse the unchanged existing secret, identical to the Apps Script property of this name; the validator accepts 32–256 non-whitespace ASCII characters. |
 
-Real values belong in ignored `.env.local` or Vercel server-side environment settings. Never put them in HTML, browser code, URLs or Git. Public `js/registration-config.js` contains only `registrationEnabled: false` and `apiPath: '/api/register'`.
+Real values belong in ignored `.env.local` or Vercel server-side environment settings. Never put them in HTML, browser code, URLs or Git. Public `js/registration-config.js` contains only `demoMode: false`, `registrationEnabled: false` and `apiPath: '/api/register'`.
 
 Privately confirm that the existing Vercel value matches Apps Script **Project Settings → Script Properties**. Keep the existing registration security key unchanged. Do not generate a replacement, print it, paste it into `Code.gs`, or include it in release files.
 
@@ -71,7 +71,7 @@ Editing source alone does not update a versioned deployment. Coordinate Apps Scr
 
 ## Requests and confirmation
 
-The browser posts exactly six strings as JSON to `/api/register`:
+Only the real controller, when separately enabled with explicit `demoMode: false`, posts exactly six strings as JSON to `/api/register`. The demo controller makes no requests:
 
 ```text
 fullName, email, phone, selectedClass, preferredContact, website
@@ -119,11 +119,11 @@ npm.cmd test
 npm.cmd run dev
 ```
 
-If `.env.local` already exists, edit it instead of overwriting it. Before a closed local check, confirm both `REGISTRATION_ENABLED=false` and `REGISTRATION_LOCAL_TEST_ENABLED=false`; an old local test switch otherwise opens the loopback test handler. Restart the server after environment edits. Open `http://127.0.0.1:8000/registration.html`. Defaults keep UI/API closed. A plain static server cannot execute the API.
+If `.env.local` already exists, edit it instead of overwriting it. Keep `REGISTRATION_ENABLED=false`. `REGISTRATION_LOCAL_TEST_ENABLED=true` enables the loopback test handler; `false` closes it. Restart the server after environment edits. Open `http://127.0.0.1:8000/registration.html` through `npm.cmd run dev`, not a file URL or plain static server. The persistent frontend remains closed; only this local HTTP configuration selects the real controller and opens its local gate.
 
 The included automated tests cover validation, authentication, honeypot, throttling/cache behavior, ID replay/conflict, simulated concurrency, `Pending` writes, exact readback, uncertainty, redirects, deadlines, invalid receipts, browser states and local test isolation. They run the actual API and `Code.gs` together against mocked Google services and response redirects. They do not use private credentials or send live Google requests.
 
-These tests do not establish actual Google LockService behavior, permissions, quotas, Vercel deployment behavior, or live Sheet writes. Check the closed page at phone, tablet and desktop widths, including disabled submission, JavaScript errors and overflow. A closed-page check cannot establish a successful phone registration.
+These tests do not establish actual Google LockService behavior, permissions, quotas, Vercel deployment behavior, or live Sheet writes. Your manual loopback test should verify a confirmed application reference against its actual Sheet row. This localhost-only setup cannot be accessed from another phone or establish a successful public phone registration.
 
 The optional loopback override is documented in [REGISTRATION-LOCAL-TEST.md](REGISTRATION-LOCAL-TEST.md). `.env.example` keeps `REGISTRATION_LOCAL_TEST_ENABLED=false`. Vercel's API does not read that switch; the local server refuses it in production/Vercel environments. Do not include ignored private QA helpers or their retained state in the release.
 
@@ -139,8 +139,8 @@ After an authorized closed deployment, verify `/registration.html` shows the clo
 2. Use an isolated QA/Preview deployment or the documented loopback test mode, with a private QA Sheet or explicitly approved fictional records. A Preview API needs its exact HTTPS preview origin and server-only credentials; opening a QA UI/server gate must not change production gates.
 3. Send one approved fresh test application/UUID. Verify the returned IDs against exactly one actual Sheet row, including `Pending`, field values and leading phone zeroes. Replaying an existing receipt alone does not exercise a new append.
 4. Repeat the same body/UUID, including concurrently. Confirm one row and the same receipt. Test changed-data conflict, unauthorized direct calls, invalid fields, honeypot, throttling and lock contention with no extra rows. Test uncertainty using a controlled QA backend and same-ID recovery.
-5. Temporarily open the frontend flag only in the isolated QA copy. Verify HTTPS phone browsers, receipts, loading/errors, Email contact validation and duplicate clicks. Compare receipts to the Sheet and check cold-request latency against the eight-second deadline. Close test gates afterward.
-6. After those checks and a separate public-launch authorization, prepare a new production deployment containing `registrationEnabled: true` and server-side `REGISTRATION_ENABLED=true`, with the canonical production origin, existing `/exec` URL and unchanged existing key. This closed release does not enable either production gate, commit, push or deploy.
+5. Keep `demoMode: false` and temporarily open the frontend flag only in the isolated QA copy. Verify HTTPS phone browsers, receipts, loading/errors, Email contact validation and duplicate clicks. Compare receipts to the Sheet and check cold-request latency against the eight-second deadline. Close test gates afterward.
+6. After those checks and a separate public-launch authorization, prepare a new production deployment containing `demoMode: false`, `registrationEnabled: true` and server-side `REGISTRATION_ENABLED=true`, with the canonical production origin, existing `/exec` URL and unchanged existing key. This local test setup does not enable either production gate, commit, push or deploy.
 
 Only for separately authorized loopback QA: replace the marked fictional values and retain `$submissionId` for the replay. Run the following block once; re-running its UUID assignment creates a different application attempt.
 

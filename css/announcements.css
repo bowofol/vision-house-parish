@@ -1,0 +1,199 @@
+/* Editorial church life layout, scoped to the existing announcements page. */
+.announcements-page .announcements-hero {
+  color: var(--white);
+  background: var(--deep-green);
+  border-bottom: 1px solid var(--deep-green);
+}
+.announcements-page .announcements-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+  align-items: center;
+  gap: clamp(32px, 4.5vw, 68px);
+  padding-block: clamp(48px, 5vw, 76px);
+}
+.announcements-page .announcements-hero-copy { min-width: 0; }
+.announcements-page .announcements-hero-copy .eyebrow { margin-bottom: 22px; color: #d5eadc; }
+.announcements-page .announcements-hero .page-title {
+  color: var(--white);
+  font-size: clamp(54px, 5.6vw, 82px);
+  line-height: 1.04;
+  letter-spacing: -.045em;
+}
+.announcements-page .announcements-hero .page-title em { color: #dce8cf; }
+.announcements-page .announcements-hero .page-lede {
+  max-width: 35ch;
+  margin-top: 26px;
+  color: #e1ebe4;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.announcements-page .announcements-hero .button { margin-top: 28px; }
+.announcements-page .announcements-hero :focus-visible { outline-color: var(--white); }
+.announcements-page .announcements-hero-photo {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--deep-navy);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, .16);
+}
+.announcements-page .announcements-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 54%;
+}
+.announcements-page .announcements-hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 58%, rgba(5, 26, 19, .86) 100%);
+  pointer-events: none;
+}
+.announcements-page .announcements-hero-photo figcaption {
+  position: absolute;
+  z-index: 1;
+  inset-inline: 28px;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--white);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.announcements-page .announcements-photo-line { flex: 0 0 24px; height: 1px; background: #e4ecd9; }
+.announcements-page .page-content { padding: clamp(56px, 6vw, 88px) 0 clamp(64px, 7vw, 104px); background: #faf9f5; }
+.announcements-page .programme-announcement { margin-bottom: clamp(64px, 7vw, 100px); padding: 0; border: 0; border-radius: 0; background: transparent; }
+.announcements-page .programme-announcement-heading { align-items: flex-end; gap: 30px; margin-bottom: 36px; }
+.announcements-page .programme-announcement-heading .eyebrow { margin-bottom: 14px; }
+.announcements-page .programme-announcement-heading h2 { margin: 0 0 16px; font-size: clamp(34px, 3.6vw, 50px); line-height: 1.2; }
+.announcements-page .programme-announcement-heading p:not(.eyebrow) { max-width: 50ch; font-size: 14px; }
+.announcements-page .programme-announcement-heading .text-link { margin-bottom: 2px; }
+.announcements-page .programme-announcement-grid { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: 28px; align-items: stretch; }
+.announcements-page .programme-weekday-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; min-width: 0; }
+.announcements-page .programme-announcement-group { padding: clamp(24px, 2.6vw, 36px); border-radius: 8px; border-color: #dce3dc; box-shadow: 0 4px 20px rgba(11, 31, 58, .025); }
+.announcements-page .programme-card--weekday { display: flex; flex-direction: column; border-top: 3px solid var(--forest); }
+.announcements-page .programme-card--thursday { background: #edf3ef; }
+.announcements-page .programme-card-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 30px; }
+.announcements-page .programme-announcement-day { display: block; padding: 0; color: var(--forest); font: 700 11px/1.6 var(--body); letter-spacing: .1em; text-transform: uppercase; }
+.announcements-page .programme-card-icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 40px; width: 40px; height: 40px; color: var(--forest); border-radius: 50%; background: #e6f0e9; }
+.announcements-page .programme-card-icon .icon { width: 21px; height: 21px; flex-basis: 21px; }
+.announcements-page .programme-card--thursday .programme-card-icon { background: var(--white); }
+.announcements-page .programme-card--weekday .programme-announcement-list { margin-top: auto; }
+.announcements-page .programme-announcement-list li { padding: 0; border: 0; }
+.announcements-page .programme-announcement-list strong { color: var(--deep-navy); font: 500 clamp(26px, 2.2vw, 32px)/1.2 var(--display); letter-spacing: -.02em; overflow-wrap: normal; }
+.announcements-page .programme-time { display: flex; align-items: center; gap: 8px; margin-top: 20px; color: var(--forest); font-size: 13px; font-weight: 700; line-height: 1.8; font-variant-numeric: tabular-nums; }
+.announcements-page .programme-time .icon { width: 16px; height: 16px; flex-basis: 16px; }
+.announcements-page .programme-card--monthly { grid-column: 1 / -1; position: relative; background: #e5eee5; border-color: #cfdccd; border-left: 4px solid var(--forest); }
+.announcements-page .programme-card--monthly .programme-card-top { margin-bottom: 14px; }
+.announcements-page .programme-monthly-label { color: var(--forest); font-size: 10px; font-weight: 700; line-height: 1.7; letter-spacing: .1em; text-transform: uppercase; }
+.announcements-page .programme-card--monthly .programme-card-icon { background: rgba(255, 255, 255, .68); }
+.announcements-page .programme-card--monthly .programme-announcement-day { margin-bottom: 13px; color: #3d5745; font-size: 11px; letter-spacing: .055em; }
+.announcements-page .programme-card--monthly .programme-announcement-list strong { font-size: clamp(30px, 2.8vw, 38px); }
+.announcements-page .programme-card--monthly .programme-time { margin-top: 13px; }
+.announcements-page .programme-description { color: #4d5f54; font-size: 13px; line-height: 1.85; }
+.announcements-page .programme-card--monthly .programme-description { max-width: 46ch; margin-top: 14px; }
+.announcements-page .programme-card--sunday { color: var(--white); border: 1px solid var(--deep-navy); background: var(--deep-navy); }
+.announcements-page .programme-sunday-heading { margin-bottom: 25px; }
+.announcements-page .programme-sunday-heading .eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; color: #c5e0d3; letter-spacing: .12em; }
+.announcements-page .programme-sunday-heading .eyebrow .icon { width: 20px; height: 20px; flex-basis: 20px; }
+.announcements-page .programme-sunday-heading h3 { color: var(--white); font: 500 clamp(32px, 3vw, 42px)/1.2 var(--display); letter-spacing: -.025em; }
+.announcements-page .programme-sunday-heading h3 em { color: #d7e9d7; font-weight: 500; }
+.announcements-page .programme-sunday-heading > p:not(.eyebrow) { margin-top: 14px; color: #d2dde5; font-size: 13px; line-height: 1.8; }
+.announcements-page .programme-sunday-sessions { display: grid; gap: 0; }
+.announcements-page .programme-sunday-sessions li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 15px; align-items: start; padding: 22px 0; border-top: 1px solid #34475c; }
+.announcements-page .programme-sunday-sessions li:last-child { padding-bottom: 0; }
+.announcements-page .programme-session-number { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-top: 2px; border: 1px solid #496077; border-radius: 50%; color: #cadace; font-size: 10px; font-weight: 600; }
+.announcements-page .programme-sunday-sessions strong { color: var(--white); font-size: clamp(22px, 1.9vw, 26px); line-height: 1.3; }
+.announcements-page .programme-sunday-sessions .programme-time { margin-top: 6px; color: #d2e6d9; font-size: 12px; }
+.announcements-page .programme-session--worship strong { color: #e4eed5; }
+.announcements-page .programme-session--worship .programme-session-number { color: var(--deep-navy); border-color: #d8e6d3; background: #d8e6d3; }
+.announcements-page .programme-sunday-sessions .programme-description { display: flex; align-items: center; gap: 6px; margin-top: 7px; color: #c5d3df; font-size: 12px; }
+.announcements-page .programme-sunday-sessions .programme-description .icon { width: 14px; height: 14px; flex-basis: 14px; }
+.announcements-page .announcements-updates-heading { padding-top: 44px; margin-bottom: 32px; border-top: 1px solid #dce3dc; }
+.announcements-page .announcements-updates-heading .eyebrow { margin-bottom: 14px; }
+.announcements-page .announcements-updates-heading h2 { font-size: clamp(32px, 3.4vw, 46px); line-height: 1.25; }
+.announcements-page .announcements-updates-heading > p:last-child { margin-top: 18px; color: var(--muted); font-size: 14px; }
+.announcements-page .announcement-filters { padding-bottom: 28px; }
+.announcements-page .announcement-filter { border-radius: 24px; transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+.announcements-page .announcement-filter:hover { border-color: var(--forest); }
+.announcements-page .announcement-card { border-radius: 8px; box-shadow: 0 4px 20px rgba(11, 31, 58, .025); }
+.announcements-page .announcement-featured { border-left: 4px solid var(--forest); background: #edf3ef; }
+.announcements-page .announcement-image { object-position: 50% 40%; }
+.announcements-page .empty-state { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; align-items: center; gap: 26px; padding: 36px; background: var(--white); border-radius: 8px; border-color: #dce3dc; }
+.announcements-page .empty-state .card-symbol { width: 56px; height: 56px; margin: 0; background: #edf3ef; border: 0; }
+.announcements-page .empty-state h2 { font-size: 30px; }
+.announcements-page .empty-state p { max-width: 62ch; margin-top: 10px; font-size: 13px; }
+.announcements-page .empty-state .text-link { margin: 0; }
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .announcements-page .programme-card--weekday,
+  .announcements-page .programme-card--monthly { transition: transform .3s var(--motion-ease), box-shadow .3s ease; }
+  .announcements-page .programme-card--weekday:hover,
+  .announcements-page .programme-card--monthly:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(11, 31, 58, .065); }
+}
+@media (max-width: 1199px) {
+  .announcements-page .programme-announcement-grid { gap: 22px; }
+  .announcements-page .programme-weekday-cards { gap: 18px; }
+  .announcements-page .programme-card--weekday { padding: 24px 20px; }
+  .announcements-page .programme-card--weekday .programme-announcement-list strong { font-size: 26px; }
+  .announcements-page .empty-state { grid-template-columns: 56px minmax(0, 1fr); }
+  .announcements-page .empty-state .text-link { grid-column: 2; justify-self: start; }
+}
+@media (max-width: 1023px) {
+  .announcements-page .announcements-hero-grid { gap: 32px; }
+  .announcements-page .announcements-hero .page-title { font-size: clamp(48px, 6.6vw, 64px); }
+  .announcements-page .announcements-hero-photo { aspect-ratio: 4 / 3; }
+  .announcements-page .announcements-hero-photo img { object-position: 52% 54%; }
+  .announcements-page .announcements-hero-photo figcaption { inset-inline: 20px; bottom: 20px; font-size: 11px; }
+  .announcements-page .programme-announcement-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .announcements-page .programme-announcement-group { padding: 30px; }
+  .announcements-page .programme-card--weekday .programme-announcement-list strong { font-size: 30px; }
+  .announcements-page .programme-card--monthly { padding: 30px; }
+  .announcements-page .programme-sunday-sessions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; }
+  .announcements-page .programme-sunday-sessions li:nth-last-child(-n+2) { padding-bottom: 0; }
+  .announcements-page .programme-sunday-sessions strong { font-size: 23px; }
+}
+@media (max-width: 767px) {
+  .announcements-page .announcements-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 48px 40px; }
+  .announcements-page .announcements-hero .page-title { font-size: clamp(52px, 11vw, 68px); }
+  .announcements-page .announcements-hero .page-lede { max-width: 42ch; font-size: 14px; }
+  .announcements-page .announcements-hero-photo { aspect-ratio: 16 / 10; }
+  .announcements-page .announcements-hero-photo img { object-position: 50% 54%; }
+  .announcements-page .announcements-hero-photo figcaption { inset-inline: 18px; bottom: 16px; gap: 9px; }
+  .announcements-page .programme-announcement-heading { gap: 18px; margin-bottom: 28px; }
+  .announcements-page .programme-announcement-heading h2 { max-width: 16ch; }
+  .announcements-page .programme-weekday-cards { gap: 16px; }
+  .announcements-page .programme-announcement-group { padding: 24px; }
+  .announcements-page .programme-card--weekday { padding: 24px 20px; }
+  .announcements-page .programme-card-top { gap: 10px; margin-bottom: 26px; }
+  .announcements-page .programme-card--weekday .programme-announcement-list strong { font-size: 25px; }
+  .announcements-page .programme-time { font-size: 12px; }
+  .announcements-page .programme-card--weekday .programme-time { flex-wrap: wrap; }
+  .announcements-page .programme-card--monthly { padding: 26px; }
+  .announcements-page .programme-sunday-sessions { grid-template-columns: minmax(0, 1fr); }
+  .announcements-page .programme-sunday-sessions li:nth-last-child(2) { padding-bottom: 22px; }
+  .announcements-page .empty-state { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 26px; }
+  .announcements-page .empty-state .text-link { grid-column: 1; }
+  .announcements-page .announcement-body { padding: 26px; }
+}
+@media (max-width: 479px) {
+  .announcements-page .programme-weekday-cards { grid-template-columns: minmax(0, 1fr); }
+  .announcements-page .programme-card--weekday { padding: 24px; }
+  .announcements-page .programme-card--weekday .programme-announcement-list strong { font-size: 30px; }
+  .announcements-page .programme-card--weekday .programme-time { flex-wrap: nowrap; font-size: 13px; }
+  .announcements-page .programme-sunday-sessions li { gap: 12px; }
+  .announcements-page .programme-sunday-sessions strong { font-size: 22px; }
+  .announcements-page .announcements-hero-copy .eyebrow { font-size: 10px; letter-spacing: .12em; }
+  .announcements-page .announcements-hero-photo { aspect-ratio: 16 / 11; }
+  .announcements-page .announcements-photo-line { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .announcements-page { scroll-behavior: auto; }
+  .announcements-page .programme-announcement-group,
+  .announcements-page .announcement-filter,
+  .announcements-page .announcements-hero-photo,
+  .announcements-page .announcements-hero-photo img { animation: none; transition: none; transform: none; }
+}
