@@ -12,7 +12,7 @@
   window.VisionHouseConfig = window.VisionHouseConfig || {};
   window.VisionHouseConfig.registration = Object.freeze({
     demoMode: false,
-    registrationEnabled: true,
+    registrationEnabled: false,
     apiPath: '/api/register'
   });
 })();
